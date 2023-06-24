@@ -1,11 +1,13 @@
-class Background {
-    x;
-    y;
-    width;
-    height;
+class Background  extends MovableObject{
+ 
+  constructor(imagePath) {
+    super();
+    this.loadImage(imagePath)
+  }
 
-
-    constructor(){
-
-    }
+  loadImage(path) {
+    this.img = new Image();
+    this.img.src = path;
+  }
+  
 }

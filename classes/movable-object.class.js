@@ -5,12 +5,12 @@ class MovableObject {
   height = 150;
   width = 150;
 
+  constructor() {}
+
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
-
-  constructor() {}
 
   moveRight() {
     console.log("move right");

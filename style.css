@@ -3,6 +3,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    background-color: rgb(18, 170, 178);
     height: 100vh;
 }
 
