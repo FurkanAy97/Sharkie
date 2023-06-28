@@ -1,15 +1,15 @@
 class MovableObject {
-  x = 20;
-  y = 150;
+  x = 0;
+  y = 70;
   img;
   height = 150;
   width = 150;
 
   constructor() {}
 
-  loadImage(path) {
+  loadImage(imagePath) {
     this.img = new Image();
-    this.img.src = path;
+    this.img.src = imagePath;
   }
 
   moveRight() {
