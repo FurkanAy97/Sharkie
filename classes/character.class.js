@@ -1,7 +1,11 @@
 class Character extends MovableObject {
   width = 250;
   height = 250;
-  speed = 5;
+  x = 50;
+  speed = 1;
+  acceleration = 0.5;
+  isSwimming = false;
+
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/1.png",
     "img/1.Sharkie/1.IDLE/2.png",
@@ -22,39 +26,60 @@ class Character extends MovableObject {
     "img/1.Sharkie/1.IDLE/17.png",
     "img/1.Sharkie/1.IDLE/18.png",
   ];
+
+  IMAGES_SWIMMING = [
+    "img/1.Sharkie/3.Swim/1.png",
+    "img/1.Sharkie/3.Swim/2.png",
+    "img/1.Sharkie/3.Swim/3.png",
+    "img/1.Sharkie/3.Swim/4.png",
+    "img/1.Sharkie/3.Swim/5.png",
+    "img/1.Sharkie/3.Swim/6.png",
+  ];
+
   world;
 
   constructor() {
     super();
     this.loadImage("img/1.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_SWIMMING);
     this.animate();
   }
 
   animate() {
     setInterval(() => {
-      if (this.world.keyboard.RIGHT) {
+      if (this.world.keyboard.RIGHT && this.x < level1.level_end_x) {
         this.x += this.speed;
+        this.accelerate();
         this.otherDirection = false;
       }
-      if (this.world.keyboard.LEFT) {
+      if (this.world.keyboard.LEFT && this.x > 0) {
         this.x -= this.speed;
+        this.accelerate();
         this.otherDirection = true;
       }
-      if (this.world.keyboard.UP) {
+      if (this.world.keyboard.UP && this.y > -100) {
         this.y -= this.speed;
+        this.accelerate();
       }
-      if (this.world.keyboard.DOWN) {
+      if (this.world.keyboard.DOWN && this.y < 280) {
         this.y += this.speed;
+        this.accelerate();
       }
-      this.world.camera_x = -this.x;
+      this.resetSpeed();
+      this.checkIfSwimming();
+
+      this.world.camera_x = -this.x + 70;
     }, 1000 / 60);
 
     setInterval(() => {
-      let i = this.currentImage % this.IMAGES_IDLE.length;
-      let path = this.IMAGES_IDLE[i];
-      this.img = this.imageCache[path];
-      this.currentImage++;
+      if (this.isSwimming) {
+        this.playAnimation(this.IMAGES_SWIMMING);
+      } else {
+        this.playAnimation(this.IMAGES_IDLE);
+      }
     }, 1000 / 7);
   }
+
+  
 }

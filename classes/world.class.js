@@ -1,5 +1,6 @@
 class World {
   character = new Character();
+  level = level1;
   enemies = level1.enemies;
   background = level1.background;
   canvas;
@@ -13,6 +14,12 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
+    /* this.playWorldAudio() */
+  }
+
+  playWorldAudio() {
+    let worldAudio = new Audio("audio/world-audio.mp3");
+    worldAudio.play();
   }
 
   setWorld() {
@@ -24,8 +31,8 @@ class World {
 
     this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectsToMap(this.background);
-    this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.level.background);
+    this.addObjectsToMap(this.level.enemies);
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
@@ -44,17 +51,26 @@ class World {
 
   addToMap(mo) {
     if (mo.otherDirection) {
-      this.ctx.save();
-      this.ctx.translate(mo.width, 0);
-      this.ctx.scale(-1, 1);
-      mo.x = mo.x * -1;
+      this.flipImage(mo)
     }
 
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    mo.draw(this.ctx);
+    mo.drawFrame(this.ctx);
 
     if (mo.otherDirection) {
-      mo.x = mo.x * -1;
-      this.ctx.restore();
+      this.flipImageBack(mo)
     }
+  }
+
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+  }
+
+  flipImageBack(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();
   }
 }
