@@ -1,8 +1,6 @@
 class World {
   character = new Character();
   level = level1;
-  enemies = level1.enemies;
-  background = level1.background;
   canvas;
   keyboard;
   ctx;
@@ -15,6 +13,7 @@ class World {
     this.draw();
     this.setWorld();
     /* this.playWorldAudio() */
+    this.checkCollisions();
   }
 
   playWorldAudio() {
@@ -25,6 +24,25 @@ class World {
   setWorld() {
     this.character.world = this;
   }
+
+  checkCollisions() {
+  setInterval(() => {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+
+        if (this.character.energy <= 0 && this.character.isDead == false) {
+          this.character.isDead = true;
+          this.character.lastHitType = enemy.enemyType === "puffer-fish" ? "poisoned" : "shocked";
+          console.log('dead');
+        }
+        console.log(this.character.energy, this.character.lastHitType);
+      }
+    });
+  }, 400);
+}
+
+  
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -51,14 +69,14 @@ class World {
 
   addToMap(mo) {
     if (mo.otherDirection) {
-      this.flipImage(mo)
+      this.flipImage(mo);
     }
 
     mo.draw(this.ctx);
     mo.drawFrame(this.ctx);
 
     if (mo.otherDirection) {
-      this.flipImageBack(mo)
+      this.flipImageBack(mo);
     }
   }
 

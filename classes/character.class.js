@@ -36,6 +36,34 @@ class Character extends MovableObject {
     "img/1.Sharkie/3.Swim/6.png",
   ];
 
+  IMAGES_POISONED = [
+    "img/1.Sharkie/6.dead/1.Poisoned/1.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/2.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/3.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/4.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/5.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/6.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/7.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/8.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/9.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/10.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/11.png",
+    "img/1.Sharkie/6.dead/1.Poisoned/12.png",
+  ];
+
+  IMAGES_SCHOCKED = [
+    "img/1.Sharkie/6.dead/2.Electro_shock/1.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/2.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/3.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/4.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/5.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/6.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/7.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/8.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/9.png",
+    "img/1.Sharkie/6.dead/2.Electro_shock/10.png",
+  ];
+
   world;
 
   constructor() {
@@ -43,29 +71,14 @@ class Character extends MovableObject {
     this.loadImage("img/1.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SWIMMING);
+    this.loadImages(this.IMAGES_POISONED);
+    this.loadImages(this.IMAGES_SCHOCKED);
     this.animate();
   }
 
   animate() {
     setInterval(() => {
-      if (this.world.keyboard.RIGHT && this.x < level1.level_end_x) {
-        this.x += this.speed;
-        this.accelerate();
-        this.otherDirection = false;
-      }
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.x -= this.speed;
-        this.accelerate();
-        this.otherDirection = true;
-      }
-      if (this.world.keyboard.UP && this.y > -100) {
-        this.y -= this.speed;
-        this.accelerate();
-      }
-      if (this.world.keyboard.DOWN && this.y < 280) {
-        this.y += this.speed;
-        this.accelerate();
-      }
+      this.navigateCharacter();
       this.resetSpeed();
       this.checkIfSwimming();
 
@@ -73,13 +86,15 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.isSwimming) {
+      if (this.lastHitType == "poisoned") {
+        this.playAnimation(this.IMAGES_POISONED);
+      } else if (this.lastHitType == "shocked") {
+        this.playAnimation(this.IMAGES_SCHOCKED);
+      } else if (this.isSwimming) {
         this.playAnimation(this.IMAGES_SWIMMING);
       } else {
         this.playAnimation(this.IMAGES_IDLE);
       }
     }, 1000 / 7);
   }
-
-  
 }
