@@ -1,57 +1,30 @@
-class MovableObject {
-  x = 0;
-  y = 70;
-  img;
-  height = 150;
-  width = 150;
-  imageCache = {};
-  currentImage = 0;
+class MovableObject extends DrawableObject {
   speed = 0.15;
   otherDirection = false;
   energy = 100;
-  lastHitType = 'none';
+  lastHitType = "none";
+  hitType = "none";
+  lastHitTime = 0;
   isDead = false;
 
-
-  constructor() {}
-
-  loadImage(imagePath) {
-    this.img = new Image();
-    this.img.src = imagePath;
-  }
-
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
-
-  drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof PufferFish ||
-      this instanceof JellyFish ||
-      this instanceof Endboss
-    ) {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "blue";
-      ctx.rect(this.x, this.y, this.width, this.height);
-      ctx.stroke();
-    }
+  constructor() {
+    super();
   }
 
   hit() {
-    this.energy -= 10;
+    this.energy -= 20;
     if (this.energy <= 0) {
       this.energy = 0;
+    } else {
+      this.lastHitTime = new Date().getTime();
     }
   }
 
-  /* checkLastHitType() {
-    
+  isHurt() {
+    let timePassed = new Date().getTime() - this.lastHitTime;
+    timePassed = timePassed / 1000;
+    return timePassed < 1;
   }
-   */
-  
-  
 
   /*  isColliding(obj) {
     return (
@@ -70,14 +43,6 @@ class MovableObject {
       this.x <= obj.x &&
       this.y <= obj.y + obj.height
     );
-  }
-
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
   }
 
   playAnimation(images) {

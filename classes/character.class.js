@@ -4,6 +4,8 @@ class Character extends MovableObject {
   x = 50;
   speed = 1;
   acceleration = 0.5;
+  coins = 0;
+  poisonMeter = 0;
   isSwimming = false;
 
   IMAGES_IDLE = [
@@ -37,6 +39,21 @@ class Character extends MovableObject {
   ];
 
   IMAGES_POISONED = [
+    "img/1.Sharkie/5.Hurt/1.Poisoned/1.png",
+    "img/1.Sharkie/5.Hurt/1.Poisoned/2.png",
+    "img/1.Sharkie/5.Hurt/1.Poisoned/3.png",
+    "img/1.Sharkie/5.Hurt/1.Poisoned/4.png",
+    "img/1.Sharkie/5.Hurt/1.Poisoned/5.png",
+  ];
+
+  IMAGES_SHOCKED = [
+    "img/1.Sharkie/5.Hurt/2.Electric shock/1.png",
+    "img/1.Sharkie/5.Hurt/2.Electric shock/2.png",
+    "img/1.Sharkie/5.Hurt/2.Electric shock/3.png",
+    
+  ];
+
+  IMAGES_POISONED_DEATH = [
     "img/1.Sharkie/6.dead/1.Poisoned/1.png",
     "img/1.Sharkie/6.dead/1.Poisoned/2.png",
     "img/1.Sharkie/6.dead/1.Poisoned/3.png",
@@ -51,7 +68,7 @@ class Character extends MovableObject {
     "img/1.Sharkie/6.dead/1.Poisoned/12.png",
   ];
 
-  IMAGES_SCHOCKED = [
+  IMAGES_SHOCKED_DEATH = [
     "img/1.Sharkie/6.dead/2.Electro_shock/1.png",
     "img/1.Sharkie/6.dead/2.Electro_shock/2.png",
     "img/1.Sharkie/6.dead/2.Electro_shock/3.png",
@@ -72,7 +89,9 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_POISONED);
-    this.loadImages(this.IMAGES_SCHOCKED);
+    this.loadImages(this.IMAGES_POISONED_DEATH);
+    this.loadImages(this.IMAGES_SHOCKED);
+    this.loadImages(this.IMAGES_SHOCKED_DEATH);
     this.animate();
   }
 
@@ -86,10 +105,14 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.lastHitType == "poisoned") {
+      if (this.isHurt() && this.hitType == "poisoned") {
         this.playAnimation(this.IMAGES_POISONED);
+      } else if (this.isHurt() && this.hitType == "shocked") {
+        this.playAnimation(this.IMAGES_SHOCKED);
+      } else if (this.lastHitType == "poisoned") {
+        this.playAnimation(this.IMAGES_POISONED_DEATH);
       } else if (this.lastHitType == "shocked") {
-        this.playAnimation(this.IMAGES_SCHOCKED);
+        this.playAnimation(this.IMAGES_SHOCKED_DEATH);
       } else if (this.isSwimming) {
         this.playAnimation(this.IMAGES_SWIMMING);
       } else {
