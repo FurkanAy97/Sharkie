@@ -6,6 +6,7 @@ class World {
   ctx;
   camera_x = 0;
   statusBars = [new LifeBar(), new CoinBar(), new PoisonBar()];
+  throwableObjects = []
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -26,6 +27,7 @@ class World {
     this.character.world = this;
   }
 
+  
   checkCollisions() {
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
@@ -63,6 +65,7 @@ class World {
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.throwableObjects);
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);

@@ -5,7 +5,15 @@ class MovableObject extends DrawableObject {
   lastHitType = "none";
   hitType = "none";
   lastHitTime = 0;
+  lastShootTime = 0;
   isDead = false;
+  cooldown = false;
+  offset = {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  };
 
   constructor() {
     super();
@@ -26,22 +34,18 @@ class MovableObject extends DrawableObject {
     return timePassed < 1;
   }
 
-  /*  isColliding(obj) {
-    return (
-      this.x + this.width >= obj.x &&
-      this.x <= obj.x + obj.width &&
-      this.y + this.offsetY + this.height >= obj.y &&
-      this.y + this.offsetY <= obj.y + obj.height &&
-      obj.onCollisionCourse
-    ); // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
-  } */
+  cooldownTime() {
+    let timePassed = new Date().getTime() - this.lastShootTime;
+    timePassed = timePassed / 1000;
+    return timePassed < 1;
+  }
 
   isColliding(obj) {
     return (
-      this.x + this.width >= obj.x &&
-      this.y + this.height >= obj.y &&
-      this.x <= obj.x &&
-      this.y <= obj.y + obj.height
+      this.x + this.offset.left + this.width - this.offset.right > obj.x + obj.offset.left &&
+      this.x + this.offset.left < obj.x + obj.offset.left + obj.width - obj.offset.right &&
+      this.y + this.offset.top + this.height - this.offset.bottom > obj.y + obj.offset.top &&
+      this.y + this.offset.top < obj.y + obj.offset.top + obj.height - obj.offset.bottom
     );
   }
 

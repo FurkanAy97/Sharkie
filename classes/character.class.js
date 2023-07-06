@@ -7,6 +7,13 @@ class Character extends MovableObject {
   coins = 0;
   poisonMeter = 0;
   isSwimming = false;
+  offset = {
+    top: 115,
+    bottom: 170,
+    left: 45,
+    right: 90,
+  } 
+  
 
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/1.png",
@@ -50,7 +57,6 @@ class Character extends MovableObject {
     "img/1.Sharkie/5.Hurt/2.Electric shock/1.png",
     "img/1.Sharkie/5.Hurt/2.Electric shock/2.png",
     "img/1.Sharkie/5.Hurt/2.Electric shock/3.png",
-    
   ];
 
   IMAGES_POISONED_DEATH = [
@@ -100,6 +106,9 @@ class Character extends MovableObject {
       this.navigateCharacter();
       this.resetSpeed();
       this.checkIfSwimming();
+      if (this.world.keyboard.SPACE && !this.cooldown) {
+        this.shoot();
+      }
 
       this.world.camera_x = -this.x + 70;
     }, 1000 / 60);
@@ -119,5 +128,13 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_IDLE);
       }
     }, 1000 / 7);
+  }
+
+  shoot() {
+    this.world.throwableObjects.push(new ThrowableObject(this.x + this.width, this.y + this.height / 2, this.world));
+    this.cooldown = true;
+    setTimeout(() => {
+      this.cooldown = false;
+    }, 1000);
   }
 }
