@@ -131,7 +131,7 @@ class Character extends MovableObject {
   }
 
   shoot() {
-    this.world.throwableObjects.push(new ThrowableObject(this.x + this.width, this.y + this.height / 2, this.world));
+    this.world.throwableObjects.push(new ThrowableObject(this.x, this.y + this.height / 2, this.world, this.offset, this.otherDirection));
     this.cooldown = true;
     setTimeout(() => {
       this.cooldown = false;

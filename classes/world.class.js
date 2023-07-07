@@ -63,12 +63,12 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.addObjectsToMap(this.statusBars);
     this.ctx.translate(this.camera_x, 0);
-
+    
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.addToMap(this.character);
 
-    this.ctx.translate(-this.camera_x, 0);
+    this.ctx.translate(-this.camera_x, 0); 
 
     let self = this;
     requestAnimationFrame(() => {
@@ -100,6 +100,7 @@ class World {
     this.ctx.translate(mo.width, 0);
     this.ctx.scale(-1, 1);
     mo.x = mo.x * -1;
+
   }
 
   flipImageBack(mo) {
