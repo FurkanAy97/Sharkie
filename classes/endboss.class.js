@@ -1,4 +1,4 @@
-class Endboss extends MovableObject{
+class Endboss extends Enemy{
     width = 500;
     height = 500;
     y = -50;
@@ -21,12 +21,8 @@ class Endboss extends MovableObject{
         super();
         this.loadImage(this.IMAGES_FLOATING[0])
         this.loadImages(this.IMAGES_FLOATING)
-        this.animate();
+        this.animate(this.IMAGES_FLOATING);
     }
 
-    animate(){
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_FLOATING)
-        }, 200);
-    }
+    
 }

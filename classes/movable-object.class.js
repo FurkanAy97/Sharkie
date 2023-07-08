@@ -1,5 +1,4 @@
 class MovableObject extends DrawableObject {
-  speed = 0.15;
   otherDirection = false;
   energy = 100;
   lastHitType = "none";
@@ -56,6 +55,13 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
+  playAnimationOnce(images) {
+    let i = this.currentShootingImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentShootingImage++;
+  }
+
   enemyMoveLeft() {
     setInterval(() => {
       this.x -= this.speed;
@@ -65,41 +71,23 @@ class MovableObject extends DrawableObject {
   navigateCharacter() {
     if (this.world.keyboard.RIGHT && this.x < level1.level_end_x) {
       this.x += this.speed;
-      this.accelerate();
       this.otherDirection = false;
     }
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.x -= this.speed;
-      this.accelerate();
       this.otherDirection = true;
     }
     if (this.world.keyboard.UP && this.y > -100) {
       this.y -= this.speed;
-      this.accelerate();
     }
     if (this.world.keyboard.DOWN && this.y < 280) {
       this.y += this.speed;
-      this.accelerate();
     }
   }
 
-  accelerate() {
-    if (this.speed < 8) {
-      this.speed += this.acceleration;
-    }
-  }
 
-  resetSpeed() {
-    if (
-      !this.world.keyboard.RIGHT &&
-      !this.world.keyboard.LEFT &&
-      !this.world.keyboard.UP &&
-      !this.world.keyboard.DOWN
-    ) {
-      this.speed = 5;
-    }
-  }
 
+ 
   checkIfSwimming() {
     if (
       this.world.keyboard.RIGHT ||

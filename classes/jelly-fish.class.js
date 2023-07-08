@@ -1,4 +1,4 @@
-class JellyFish extends MovableObject {
+class JellyFish extends Enemy {
     width = 80;
     height = 80;
     enemyType = 'jelly-fish'
@@ -12,18 +12,13 @@ class JellyFish extends MovableObject {
     constructor(){
         super().loadImage('img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png')
 
-        this.x = 200 + Math.random() * 500;
+        this.x = 400 + Math.random() * 500;
         this.y = Math.random() * 400;
         this.loadImages(this.IMAGES_SWIMMING)
-        this.animate();
+        this.animate(this.IMAGES_SWIMMING);
     }
 
-    animate() {
-    
-        setInterval(() => {
-          this.playAnimation(this.IMAGES_SWIMMING)
-        }, 1000 / 3);
-      }
+   
 
 
 }

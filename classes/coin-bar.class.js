@@ -15,6 +15,6 @@ class CoinBar extends StatusBar {
     this.y = 40;
     this.width = 220;
     this.height = 70;
-    this.setPercentage(100);
+    this.setPercentage(0);
   }
 }

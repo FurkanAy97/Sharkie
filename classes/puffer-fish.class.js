@@ -1,4 +1,4 @@
-class PufferFish extends MovableObject {
+class PufferFish extends Enemy {
   width = 80;
   height = 80;
   enemyType = 'puffer-fish'
@@ -17,15 +17,8 @@ class PufferFish extends MovableObject {
     this.y = Math.random() * 400;
     this.loadImages(this.IMAGES_SWIMMING);
     this.speed = 0.15 + Math.random() * 0.25;
-    this.animate();
+    this.animate(this.IMAGES_SWIMMING);
   }
 
-  animate() {
-    
-    /* this.enemyMoveLeft(); */
-
-    setInterval(() => {
-      this.playAnimation(this.IMAGES_SWIMMING)
-    }, 1000 / 3);
-  }
+  
 }

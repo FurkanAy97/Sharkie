@@ -2,18 +2,18 @@ class Character extends MovableObject {
   width = 250;
   height = 250;
   x = 50;
-  speed = 1;
-  acceleration = 0.5;
+  speed = 5;
   coins = 0;
   poisonMeter = 0;
+  currentShootingImage = 0;
+  shooting = false;
   isSwimming = false;
   offset = {
     top: 115,
     bottom: 170,
     left: 45,
     right: 90,
-  } 
-  
+  };
 
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/1.png",
@@ -43,6 +43,17 @@ class Character extends MovableObject {
     "img/1.Sharkie/3.Swim/4.png",
     "img/1.Sharkie/3.Swim/5.png",
     "img/1.Sharkie/3.Swim/6.png",
+  ];
+
+  IMAGES_SHOOTING = [
+    "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/1.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/2.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/3.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/4.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/5.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/6.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/7.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/8.png",
   ];
 
   IMAGES_POISONED = [
@@ -94,6 +105,7 @@ class Character extends MovableObject {
     this.loadImage("img/1.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SWIMMING);
+    this.loadImages(this.IMAGES_SHOOTING);
     this.loadImages(this.IMAGES_POISONED);
     this.loadImages(this.IMAGES_POISONED_DEATH);
     this.loadImages(this.IMAGES_SHOCKED);
@@ -104,17 +116,18 @@ class Character extends MovableObject {
   animate() {
     setInterval(() => {
       this.navigateCharacter();
-      this.resetSpeed();
       this.checkIfSwimming();
       if (this.world.keyboard.SPACE && !this.cooldown) {
         this.shoot();
+        this.isShooting();
       }
-
       this.world.camera_x = -this.x + 70;
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.isHurt() && this.hitType == "poisoned") {
+      if (this.shooting) {
+        this.playAnimationOnce(this.IMAGES_SHOOTING);
+      } else if (this.isHurt() && this.hitType == "poisoned") {
         this.playAnimation(this.IMAGES_POISONED);
       } else if (this.isHurt() && this.hitType == "shocked") {
         this.playAnimation(this.IMAGES_SHOCKED);
@@ -127,14 +140,32 @@ class Character extends MovableObject {
       } else {
         this.playAnimation(this.IMAGES_IDLE);
       }
-    }, 1000 / 7);
+    }, 1000 / 8);
   }
 
   shoot() {
-    this.world.throwableObjects.push(new ThrowableObject(this.x, this.y + this.height / 2, this.world, this.offset, this.otherDirection));
+    setTimeout(() => {
+      this.world.throwableObjects.push(
+        new ThrowableObject(
+          this.x,
+          this.y + this.height / 2,
+          this.world,
+          this.offset,
+          this.otherDirection
+        )
+      );
+    }, 800);
     this.cooldown = true;
     setTimeout(() => {
       this.cooldown = false;
+    }, 1000);
+  }
+
+  isShooting() {
+    this.shooting = true;
+    setTimeout(() => {
+      this.shooting = false;
+      this.currentShootingImage = 0;
     }, 1000);
   }
 }
