@@ -6,7 +6,7 @@ class World {
   ctx;
   camera_x = 0;
   statusBars = [new LifeBar(), new CoinBar(), new PoisonBar()];
-  throwableObjects = []
+  throwableObjects = [];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -27,31 +27,62 @@ class World {
     this.character.world = this;
   }
 
-  
   checkCollisions() {
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-          this.character.hit();
-          this.statusBars.forEach((bar) => {
-            if (bar.barType == "life-bar") {
-              bar.setPercentage(this.character.energy);
-            }
-          });
-          if (enemy.enemyType === "puffer-fish") {
-            this.character.hitType = "poisoned";
-          } else if (enemy.enemyType === "jelly-fish") {
-            this.character.hitType = "shocked";
-          }
-          if (this.character.energy <= 0 && this.character.isDead == false) {
-            this.character.isDead = true;
-            this.character.lastHitType = enemy.enemyType === "puffer-fish" ? "poisoned" : "shocked";
-            console.log("dead");
-          }
-          console.log(this.character.energy, this.character.lastHitType, this.character.hitType);
-        }
+        this.checkCharacterCollision(enemy);
+        this.checkBubbleCollision(enemy);
       });
     }, 400);
+  }
+
+  checkBubbleCollision(enemy) {
+    this.throwableObjects.forEach((o) => {
+      if (o.isBubbleColliding(enemy) && enemy instanceof JellyFish) {
+        console.log("colliding");
+        enemy.isDead = true;
+        const index = this.level.enemies.indexOf(enemy);
+        if (index !== -1) {
+          this.throwableObjects.shift();
+          this.jellyfishKnockback(enemy);
+          setTimeout(() => {
+            this.level.enemies.splice(index, 1);
+          }, 2000);
+        }
+      } else if (o.isBubbleColliding(enemy)) {
+        this.throwableObjects.shift();
+      }
+    });
+  }
+
+  jellyfishKnockback(enemy) {
+    let Yspeed = 0.1;
+    setInterval(() => {
+      enemy.y -= Yspeed;
+      Yspeed += 0.1;
+    }, 1000 / 60);
+  }
+
+  checkCharacterCollision(enemy) {
+    if (this.character.isColliding(enemy)) {
+      this.character.hit();
+      this.statusBars.forEach((bar) => {
+        if (bar.barType == "life-bar") {
+          bar.setPercentage(this.character.energy);
+        }
+      });
+      if (enemy.enemyType === "puffer-fish") {
+        this.character.hitType = "poisoned";
+      } else if (enemy.enemyType === "jelly-fish") {
+        this.character.hitType = "shocked";
+      }
+      if (this.character.energy <= 0 && this.character.isDead == false) {
+        this.character.isDead = true;
+        this.character.lastHitType = enemy.enemyType === "puffer-fish" ? "poisoned" : "shocked";
+        console.log("dead");
+      }
+      console.log(this.character.energy, this.character.lastHitType, this.character.hitType);
+    }
   }
 
   draw() {
@@ -63,12 +94,12 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.addObjectsToMap(this.statusBars);
     this.ctx.translate(this.camera_x, 0);
-    
+
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.addToMap(this.character);
 
-    this.ctx.translate(-this.camera_x, 0); 
+    this.ctx.translate(-this.camera_x, 0);
 
     let self = this;
     requestAnimationFrame(() => {
@@ -100,7 +131,6 @@ class World {
     this.ctx.translate(mo.width, 0);
     this.ctx.scale(-1, 1);
     mo.x = mo.x * -1;
-
   }
 
   flipImageBack(mo) {

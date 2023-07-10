@@ -1,15 +1,18 @@
 class Enemy extends MovableObject {
-    enemyType;
+  enemyType;
+  IMAGES_DEATH;
 
-    constructor(){
-        super()
-    }
+  constructor() {
+    super();
+  }
 
-    animate(images){
-        setInterval(() => {
-            this.playAnimation(images)
-        }, 200);
-    }
-
-    
+  animate(images) {
+    setInterval(() => {
+      if (this.isDead) {
+        this.playAnimation(this.IMAGES_DEATH);
+      } else {
+        this.playAnimation(images);
+      }
+    }, 200);
+  }
 }

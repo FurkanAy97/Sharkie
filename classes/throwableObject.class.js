@@ -3,6 +3,13 @@ class ThrowableObject extends MovableObject {
   world;
   throwInterval;
   otherDirection;
+  offset = {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  };
+  
   
 
   constructor(x, y, world, offset, otherDirection) { 
@@ -18,6 +25,7 @@ class ThrowableObject extends MovableObject {
     this.width = 40;
     this.height = 40;
     this.world = world;
+    this.offset = this.offset
     this.loadImage("img/1.Sharkie/4.Attack/Bubble trap/Bubble.png");
     this.throw();
   } 
