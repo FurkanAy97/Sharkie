@@ -2,6 +2,7 @@ class JellyFish extends Enemy {
   width = 80;
   height = 80;
   enemyType = "jelly-fish";
+  
   IMAGES_SWIMMING = [
     "img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png",
     "img/2.Enemy/2 Jelly fish/Regular damage/Lila 2.png",

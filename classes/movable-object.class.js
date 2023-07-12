@@ -1,3 +1,7 @@
+/**
+ * Represents a movable object that extends the DrawableObject class.
+ * @extends DrawableObject
+ */
 class MovableObject extends DrawableObject {
   otherDirection = false;
   energy = 100;
@@ -13,11 +17,13 @@ class MovableObject extends DrawableObject {
     left: 0,
     right: 0,
   };
-
   constructor() {
     super();
   }
 
+  /**
+   * Decreases the energy of the object by 20 and updates the last hit time.
+   */
   hit() {
     this.energy -= 20;
     if (this.energy <= 0) {
@@ -27,18 +33,31 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks if the object was recently hit.
+   * @returns {boolean} True if the object was hit within the last second, false otherwise.
+   */
   isHurt() {
     let timePassed = new Date().getTime() - this.lastHitTime;
     timePassed = timePassed / 1000;
     return timePassed < 1;
   }
 
+  /**
+   * Checks if the object is in cooldown after shooting.
+   * @returns {boolean} True if the object is in cooldown after shooting within the last second, false otherwise.
+   */
   cooldownTime() {
     let timePassed = new Date().getTime() - this.lastShootTime;
     timePassed = timePassed / 1000;
     return timePassed < 1;
   }
 
+  /**
+   * Checks if the object is colliding with another object.
+   * @param {Object} obj - The object to check collision against.
+   * @returns {boolean} True if the object is colliding with the given object, false otherwise.
+   */
   isColliding(obj) {
     return (
       this.x + this.offset.left + this.width - this.offset.right > obj.x + obj.offset.left &&
@@ -48,15 +67,24 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * Checks if the object's bubble is colliding with another object.
+   * @param {Object} obj - The object to check bubble collision against.
+   * @returns {boolean} True if the object's bubble is colliding with the given object, false otherwise.
+   */
   isBubbleColliding(obj) {
     return (
-      this.x  + this.width > obj.x  &&
-      this.x  < obj.x  + obj.width  &&
-      this.y  + this.height  > obj.y  &&
-      this.y < obj.y  + obj.height 
+      this.x + this.width > obj.x &&
+      this.x < obj.x + obj.width &&
+      this.y + this.height > obj.y &&
+      this.y < obj.y + obj.height
     );
   }
 
+  /**
+   * Plays the animation by cycling through the given images.
+   * @param {string[]} images - An array of image paths.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -64,19 +92,37 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
-  playAnimationOnce(images) {
+  /**
+   * Plays the shooting animation once by cycling through the given images.
+   * @param {string[]} images - An array of image paths.
+   */
+  playShootingAnimation(images) {
     let i = this.currentShootingImage % images.length;
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentShootingImage++;
   }
 
+
+  playTransAnimation(images) {
+    let i = this.currentTransImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentTransImage++;
+  }
+
+  /**
+   * Moves the enemy character to the left continuously.
+   */
   enemyMoveLeft() {
     setInterval(() => {
       this.x -= this.speed;
     }, 1000 / 60);
   }
 
+  /**
+   * Moves the character based on keyboard input.
+   */
   navigateCharacter() {
     if (this.world.keyboard.RIGHT && this.x < level1.level_end_x) {
       this.x += this.speed;
@@ -94,9 +140,9 @@ class MovableObject extends DrawableObject {
     }
   }
 
-
-
- 
+  /**
+   * Checks if the character is swimming based on keyboard input.
+   */
   checkIfSwimming() {
     if (
       this.world.keyboard.RIGHT ||

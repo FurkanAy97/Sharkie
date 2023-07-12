@@ -33,7 +33,7 @@ class World {
         this.checkCharacterCollision(enemy);
         this.checkBubbleCollision(enemy);
       });
-    }, 400);
+    }, 100);
   }
 
   checkBubbleCollision(enemy) {
@@ -49,7 +49,11 @@ class World {
             this.level.enemies.splice(index, 1);
           }, 2000);
         }
-      } else if (o.isBubbleColliding(enemy)) {
+      }
+      if (o.isBubbleColliding(enemy) && enemy instanceof PufferFish) {
+        enemy.transition = true;
+        enemy.XSpeed = 4;
+        enemy.offset.bottom = 0;
         this.throwableObjects.shift();
       }
     });

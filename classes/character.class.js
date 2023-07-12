@@ -126,7 +126,7 @@ class Character extends MovableObject {
 
     setInterval(() => {
       if (this.shooting) {
-        this.playAnimationOnce(this.IMAGES_SHOOTING);
+        this.playShootingAnimation(this.IMAGES_SHOOTING);
       } else if (this.isHurt() && this.hitType == "poisoned") {
         this.playAnimation(this.IMAGES_POISONED);
       } else if (this.isHurt() && this.hitType == "shocked") {
