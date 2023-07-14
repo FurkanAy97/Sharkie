@@ -2,7 +2,7 @@ class Endboss extends Enemy{
     width = 500;
     height = 500;
     y = -50;
-    x = 500; 
+    x = 1500; 
     offset = {
         top: 190,
         bottom: 270,

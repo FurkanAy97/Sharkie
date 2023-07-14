@@ -39,6 +39,7 @@ class World {
       this.level.barriers.forEach((barrier) => {
         this.checkBarrierCollision(barrier);
         this.checkIfCollisionOver(barrier);
+        this.checkBubbleBarrierCollision(barrier);
         /* console.log(this.blockSwimming);   */
       });
     }, 1000 / 60);
@@ -114,6 +115,16 @@ class World {
       }
     });
   }
+
+ checkBubbleBarrierCollision(barrier) {
+    this.throwableObjects.forEach((throwableObject) => {
+      if (barrier.isColliding(throwableObject)) {
+        this.throwableObjects.shift(); 
+      }
+    });
+}
+
+  
 
   checkCharacterCollision(enemy) {
     if (this.character.isColliding(enemy)) {

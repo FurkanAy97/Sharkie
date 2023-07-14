@@ -5,9 +5,10 @@
 class MovableObject extends DrawableObject {
   otherDirection = false;
   energy = 100;
+  lastHitTime = 0;
+  hitCooldown = 1000; // 1 second cooldown
   lastHitType = "none";
   hitType = "none";
-  lastHitTime = 0;
   lastShootTime = 0;
   isDead = false;
   cooldown = false;
@@ -28,14 +29,18 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Decreases the energy of the object by 20 and updates the last hit time.
+   * Inflicts a hit on the object, reducing its energy level.
    */
   hit() {
-    this.energy -= 20;
-    if (this.energy <= 0) {
-      this.energy = 0;
-    } else {
-      this.lastHitTime = new Date().getTime();
+    const currentTime = new Date().getTime();
+    const timeSinceLastHit = currentTime - this.lastHitTime;
+
+    if (timeSinceLastHit >= this.hitCooldown) {
+      this.energy -= 20;
+      if (this.energy <= 0) {
+        this.energy = 0;
+      }
+      this.lastHitTime = currentTime;
     }
   }
 
@@ -44,8 +49,9 @@ class MovableObject extends DrawableObject {
    * @returns {boolean} True if the object was hit within the last second, false otherwise.
    */
   isHurt() {
-    let timePassed = new Date().getTime() - this.lastHitTime;
-    timePassed = timePassed / 1000;
+    const currentTime = new Date().getTime();
+    const timeSinceLastHit = currentTime - this.lastHitTime;
+    const timePassed = timeSinceLastHit / 1000;
     return timePassed < 1;
   }
 
