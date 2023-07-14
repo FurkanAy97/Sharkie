@@ -24,6 +24,8 @@ class DrawableObject {
       this instanceof Character ||
       this instanceof PufferFish ||
       this instanceof JellyFish ||
+      this instanceof SuperJellyFish ||
+      this instanceof Barrier ||
       this instanceof Endboss
     ) {
       ctx.beginPath();

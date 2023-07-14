@@ -7,6 +7,7 @@ class World {
   camera_x = 0;
   statusBars = [new LifeBar(), new CoinBar(), new PoisonBar()];
   throwableObjects = [];
+  blockSwimming = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -34,11 +35,67 @@ class World {
         this.checkBubbleCollision(enemy);
       });
     }, 100);
+    setInterval(() => {
+      this.level.barriers.forEach((barrier) => {
+        this.checkBarrierCollision(barrier);
+        this.checkIfCollisionOver(barrier);
+        this.checkBubbleBarrierCollision(barrier);
+        /* console.log(this.blockSwimming);   */
+      });
+    }, 1000 / 60);
+  }
+
+  checkBarrierCollision(barrier) {
+    if (this.character.isColliding(barrier) && this.keyboard.RIGHT) {
+      this.character.blockedSwimDirections.right = true;
+      this.character.x -= 5;
+      this.blockSwimmingTimeout();
+    }
+    if (this.character.isColliding(barrier) && this.keyboard.LEFT) {
+      this.character.blockedSwimDirections.left = true;
+      this.character.x += 5;
+      this.blockSwimmingTimeout();
+    }
+    if (this.character.isColliding(barrier) && this.keyboard.UP) {
+      this.character.blockedSwimDirections.up = true;
+      this.character.y += 5;
+      this.blockSwimmingTimeout();
+    }
+    if (this.character.isColliding(barrier) && this.keyboard.DOWN) {
+      this.character.blockedSwimDirections.down = true;
+      this.character.y -= 5;
+      this.blockSwimmingTimeout();
+    }
+  }
+
+  blockSwimmingTimeout() {
+    this.blockSwimming = true;
+    setTimeout(() => {
+      this.blockSwimming = false;
+    }, 200);
+  }
+
+  checkIfCollisionOver(barrier) {
+    if (this.character.isColliding(barrier) == false) {
+      this.resetBlockedDirections();
+    }
+  }
+
+  resetBlockedDirections() {
+    this.character.blockedSwimDirections = {
+      right: false,
+      left: false,
+      up: false,
+      down: false,
+    };
   }
 
   checkBubbleCollision(enemy) {
     this.throwableObjects.forEach((o) => {
-      if (o.isBubbleColliding(enemy) && enemy instanceof JellyFish) {
+      if (
+        o.isBubbleColliding(enemy) &&
+        (enemy instanceof JellyFish || enemy instanceof SuperJellyFish)
+      ) {
         console.log("colliding");
         enemy.isDead = true;
         const index = this.level.enemies.indexOf(enemy);
@@ -59,13 +116,15 @@ class World {
     });
   }
 
-  jellyfishKnockback(enemy) {
-    let Yspeed = 0.1;
-    setInterval(() => {
-      enemy.y -= Yspeed;
-      Yspeed += 0.1;
-    }, 1000 / 60);
-  }
+ checkBubbleBarrierCollision(barrier) {
+    this.throwableObjects.forEach((throwableObject) => {
+      if (barrier.isColliding(throwableObject)) {
+        this.throwableObjects.shift(); 
+      }
+    });
+}
+
+  
 
   checkCharacterCollision(enemy) {
     if (this.character.isColliding(enemy)) {
@@ -89,11 +148,20 @@ class World {
     }
   }
 
+  jellyfishKnockback(enemy) {
+    let Yspeed = 0.1;
+    setInterval(() => {
+      enemy.y -= Yspeed;
+      Yspeed += 0.1;
+    }, 1000 / 60);
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.background);
+    this.addObjectsToMap(this.level.barriers);
 
     this.ctx.translate(-this.camera_x, 0);
     this.addObjectsToMap(this.statusBars);

@@ -5,12 +5,19 @@
 class MovableObject extends DrawableObject {
   otherDirection = false;
   energy = 100;
+  lastHitTime = 0;
+  hitCooldown = 1000; // 1 second cooldown
   lastHitType = "none";
   hitType = "none";
-  lastHitTime = 0;
   lastShootTime = 0;
   isDead = false;
   cooldown = false;
+  blockedSwimDirections = {
+    right: false,
+    left: false,
+    up: false,
+    down: false,
+  };
   offset = {
     top: 0,
     bottom: 0,
@@ -22,14 +29,18 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Decreases the energy of the object by 20 and updates the last hit time.
+   * Inflicts a hit on the object, reducing its energy level.
    */
   hit() {
-    this.energy -= 20;
-    if (this.energy <= 0) {
-      this.energy = 0;
-    } else {
-      this.lastHitTime = new Date().getTime();
+    const currentTime = new Date().getTime();
+    const timeSinceLastHit = currentTime - this.lastHitTime;
+
+    if (timeSinceLastHit >= this.hitCooldown) {
+      this.energy -= 20;
+      if (this.energy <= 0) {
+        this.energy = 0;
+      }
+      this.lastHitTime = currentTime;
     }
   }
 
@@ -38,8 +49,9 @@ class MovableObject extends DrawableObject {
    * @returns {boolean} True if the object was hit within the last second, false otherwise.
    */
   isHurt() {
-    let timePassed = new Date().getTime() - this.lastHitTime;
-    timePassed = timePassed / 1000;
+    const currentTime = new Date().getTime();
+    const timeSinceLastHit = currentTime - this.lastHitTime;
+    const timePassed = timeSinceLastHit / 1000;
     return timePassed < 1;
   }
 
@@ -103,7 +115,6 @@ class MovableObject extends DrawableObject {
     this.currentShootingImage++;
   }
 
-
   playTransAnimation(images) {
     let i = this.currentTransImage % images.length;
     let path = images[i];
@@ -124,18 +135,22 @@ class MovableObject extends DrawableObject {
    * Moves the character based on keyboard input.
    */
   navigateCharacter() {
-    if (this.world.keyboard.RIGHT && this.x < level1.level_end_x) {
+    if (
+      this.world.keyboard.RIGHT &&
+      this.x < level1.level_end_x &&
+      !this.blockedSwimDirections.right
+    ) {
       this.x += this.speed;
       this.otherDirection = false;
     }
-    if (this.world.keyboard.LEFT && this.x > 0) {
+    if (this.world.keyboard.LEFT && this.x > 0 && !this.blockedSwimDirections.left) {
       this.x -= this.speed;
       this.otherDirection = true;
     }
-    if (this.world.keyboard.UP && this.y > -100) {
+    if (this.world.keyboard.UP && this.y > -100 && !this.blockedSwimDirections.up) {
       this.y -= this.speed;
     }
-    if (this.world.keyboard.DOWN && this.y < 280) {
+    if (this.world.keyboard.DOWN && this.y < 280 && !this.blockedSwimDirections.down) {
       this.y += this.speed;
     }
   }
