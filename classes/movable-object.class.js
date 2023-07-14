@@ -11,6 +11,12 @@ class MovableObject extends DrawableObject {
   lastShootTime = 0;
   isDead = false;
   cooldown = false;
+  blockedSwimDirections = {
+    right: false,
+    left: false,
+    up: false,
+    down: false,
+  };
   offset = {
     top: 0,
     bottom: 0,
@@ -103,7 +109,6 @@ class MovableObject extends DrawableObject {
     this.currentShootingImage++;
   }
 
-
   playTransAnimation(images) {
     let i = this.currentTransImage % images.length;
     let path = images[i];
@@ -124,18 +129,22 @@ class MovableObject extends DrawableObject {
    * Moves the character based on keyboard input.
    */
   navigateCharacter() {
-    if (this.world.keyboard.RIGHT && this.x < level1.level_end_x) {
+    if (
+      this.world.keyboard.RIGHT &&
+      this.x < level1.level_end_x &&
+      !this.blockedSwimDirections.right
+    ) {
       this.x += this.speed;
       this.otherDirection = false;
     }
-    if (this.world.keyboard.LEFT && this.x > 0) {
+    if (this.world.keyboard.LEFT && this.x > 0 && !this.blockedSwimDirections.left) {
       this.x -= this.speed;
       this.otherDirection = true;
     }
-    if (this.world.keyboard.UP && this.y > -100) {
+    if (this.world.keyboard.UP && this.y > -100 && !this.blockedSwimDirections.up) {
       this.y -= this.speed;
     }
-    if (this.world.keyboard.DOWN && this.y < 280) {
+    if (this.world.keyboard.DOWN && this.y < 280 && !this.blockedSwimDirections.down) {
       this.y += this.speed;
     }
   }

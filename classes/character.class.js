@@ -2,7 +2,7 @@ class Character extends MovableObject {
   width = 250;
   height = 250;
   x = 50;
-  speed = 5;
+  speed = 4;
   coins = 0;
   poisonMeter = 0;
   currentShootingImage = 0;
@@ -115,7 +115,9 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
-      this.navigateCharacter();
+      if (!this.world.blockSwimming) {
+        this.navigateCharacter();
+      }
       this.checkIfSwimming();
       if (this.world.keyboard.SPACE && !this.cooldown) {
         this.shoot();
