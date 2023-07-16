@@ -36,24 +36,26 @@ class PufferFish extends Enemy {
   ];
 
   IMAGES_DEATH = [
-    "img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 2.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 3.png",
+    "img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/3.png",
   ];
 
-  constructor() {
+  constructor(x, y) {
     super();
     this.loadImage("img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png");
-    this.x = 800 + Math.random() * 500;
-    this.y = Math.random() * 400;
+    /* this.x = 200 + Math.random() * 500;
+    this.y = Math.random() * 400; */
+    this.x = x
+    this.y = y
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_TRANSITION);
     this.loadImages(this.IMAGES_BUBBLESWIM);
     this.loadImages(this.IMAGES_DEATH);
     this.speed = 0.15 + Math.random() * 0.25;
     this.animate(this.IMAGES_SWIMMING);
-    this.swim();
-    this.changeSwimDirection()
+    if (!this.isDead) {
+      this.swim();
+      this.changeSwimDirection()
+    }
   }
   
   swim() {
@@ -74,5 +76,13 @@ class PufferFish extends Enemy {
     }, Math.floor(Math.random() * 2000) + 2000);
   }
   
+  knockBack(){
+    setTimeout(() => {
+      setInterval(() => {
+        this.x -= 5
+        this.y -= 5
+      }, 1000 / 60);
+    }, 100);
+  }
   
 }

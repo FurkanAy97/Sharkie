@@ -28,7 +28,11 @@ window.addEventListener("keydown", (event) => {
   if (keyState[" "]) {
     keyboard.SPACE = true;
   }
+  if (keyState.d) {
+    keyboard.D = true;
+  }
 });
+
 
 window.addEventListener("keyup", (event) => {
   const key = event.key;
@@ -49,5 +53,8 @@ window.addEventListener("keyup", (event) => {
   }
   if (key === " ") {
     keyboard.SPACE = false;
+  }
+  if (key === "d") {
+    keyboard.D = false;
   }
 });

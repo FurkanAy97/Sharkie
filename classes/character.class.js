@@ -6,7 +6,9 @@ class Character extends MovableObject {
   coins = 0;
   poisonMeter = 0;
   currentShootingImage = 0;
+  currentTailAttackImage = 0;
   shooting = false;
+  attacking = false;
   isSwimming = false;
   offset = {
     top: 115,
@@ -54,6 +56,17 @@ class Character extends MovableObject {
     "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/6.png",
     "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/7.png",
     "img/1.Sharkie/4.Attack/Bubble trap/For Whale/Whitout bubbles/8.png",
+  ];
+
+  IMAGES_TAILATTACK = [
+    "img/1.Sharkie/4.Attack/Fin slap/1.png",
+    "img/1.Sharkie/4.Attack/Fin slap/2.png",
+    "img/1.Sharkie/4.Attack/Fin slap/3.png",
+    "img/1.Sharkie/4.Attack/Fin slap/4.png",
+    "img/1.Sharkie/4.Attack/Fin slap/5.png",
+    "img/1.Sharkie/4.Attack/Fin slap/6.png",
+    "img/1.Sharkie/4.Attack/Fin slap/7.png",
+    "img/1.Sharkie/4.Attack/Fin slap/8.png",
   ];
 
   IMAGES_POISONED = [
@@ -106,6 +119,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_SHOOTING);
+    this.loadImages(this.IMAGES_TAILATTACK);
     this.loadImages(this.IMAGES_POISONED);
     this.loadImages(this.IMAGES_POISONED_DEATH);
     this.loadImages(this.IMAGES_SHOCKED);
@@ -123,11 +137,17 @@ class Character extends MovableObject {
         this.shoot();
         this.isShooting();
       }
+      if (this.world.keyboard.D && !this.tailCooldown ) {
+        this.tailAttack(); 
+        this.isTailAttacking();
+      }
       this.world.camera_x = -this.x + 70;
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.shooting) {
+      if (this.attacking) {
+        this.playTailAttackAnimation(this.IMAGES_TAILATTACK);
+      } else if (this.shooting) {
         this.playShootingAnimation(this.IMAGES_SHOOTING);
       } else if (this.isHurt() && this.hitType == "poisoned") {
         this.playAnimation(this.IMAGES_POISONED);
@@ -143,6 +163,14 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_IDLE);
       }
     }, 1000 / 8);
+  }
+
+  isTailAttacking() {
+    this.attacking = true;
+    setTimeout(() => {
+      this.attacking = false;
+      this.currentTailAttackImage = 0;
+    }, 1000);
   }
 
   shoot() {
@@ -162,6 +190,15 @@ class Character extends MovableObject {
       this.cooldown = false;
     }, 1000);
   }
+
+  tailAttack() {
+    this.tailCooldown = true;
+    setTimeout(() => {
+      this.tailCooldown = false;
+    }, 1000);
+  } 
+
+  
 
   isShooting() {
     this.shooting = true;

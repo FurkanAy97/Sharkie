@@ -12,6 +12,7 @@ class MovableObject extends DrawableObject {
   lastShootTime = 0;
   isDead = false;
   cooldown = false;
+  tailCooldown = false;
   blockedSwimDirections = {
     right: false,
     left: false,
@@ -113,6 +114,13 @@ class MovableObject extends DrawableObject {
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentShootingImage++;
+  }
+
+  playTailAttackAnimation(images){
+    let i = this.currentTailAttackImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentTailAttackImage++;
   }
 
   playTransAnimation(images) {

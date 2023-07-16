@@ -98,14 +98,7 @@ class World {
       ) {
         console.log("colliding");
         enemy.isDead = true;
-        const index = this.level.enemies.indexOf(enemy);
-        if (index !== -1) {
-          this.throwableObjects.shift();
-          this.jellyfishKnockback(enemy);
-          setTimeout(() => {
-            this.level.enemies.splice(index, 1);
-          }, 2000);
-        }
+        this.removeJellyFish(enemy);
       }
       if (o.isBubbleColliding(enemy) && enemy instanceof PufferFish) {
         enemy.transition = true;
@@ -113,22 +106,43 @@ class World {
         enemy.offset.bottom = 0;
         this.throwableObjects.shift();
       }
+      if (o.isBubbleColliding(enemy) && enemy instanceof Endboss) {
+        this.throwableObjects.shift();
+
+      }
     });
   }
 
- checkBubbleBarrierCollision(barrier) {
+  removeJellyFish(enemy) {
+    const index = this.level.enemies.indexOf(enemy);
+    if (index !== -1) {
+      this.throwableObjects.shift();
+      this.jellyfishKnockback(enemy);
+      setTimeout(() => {
+        this.level.enemies.splice(index, 1);
+      }, 2000);
+    }
+  }
+
+  checkBubbleBarrierCollision(barrier) {
     this.throwableObjects.forEach((throwableObject) => {
       if (barrier.isColliding(throwableObject)) {
-        this.throwableObjects.shift(); 
+        this.throwableObjects.shift();
       }
     });
-}
-
-  
+  }
 
   checkCharacterCollision(enemy) {
     if (this.character.isColliding(enemy)) {
-      this.character.hit();
+      if (enemy instanceof PufferFish && this.character.attacking) {
+        enemy.isDead = true;
+        enemy.knockBack();
+        setTimeout(() => {
+          this.removePufferfish(enemy);
+        }, 500);
+      } else {
+        this.character.hit();
+      }
       this.statusBars.forEach((bar) => {
         if (bar.barType == "life-bar") {
           bar.setPercentage(this.character.energy);
@@ -145,6 +159,13 @@ class World {
         console.log("dead");
       }
       console.log(this.character.energy, this.character.lastHitType, this.character.hitType);
+    }
+  }
+
+  removePufferfish(enemy) {
+    const index = this.level.enemies.indexOf(enemy);
+    if (index !== -1) {
+      this.level.enemies.splice(index, 1);
     }
   }
 
