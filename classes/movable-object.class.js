@@ -130,6 +130,13 @@ class MovableObject extends DrawableObject {
     this.currentTransImage++;
   }
 
+  playDeathAnimation(images) {
+    let i = this.currentDeathImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentDeathImage++;
+  }
+
   /**
    * Moves the enemy character to the left continuously.
    */

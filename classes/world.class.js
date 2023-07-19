@@ -1,11 +1,12 @@
 class World {
   character = new Character();
   level = level1;
+  endboss = this.level.endboss.find((e) => e instanceof Endboss);
   canvas;
   keyboard;
   ctx;
   camera_x = 0;
-  statusBars = [new LifeBar(), new CoinBar(), new PoisonBar()];
+  statusBars = [new HealthBar(), new CoinBar(), new PoisonBar()];
   throwableObjects = [];
   blockSwimming = false;
 
@@ -26,21 +27,67 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    this.endboss.world = this;
   }
 
   checkCollisions() {
+    this.checkEnemyCollisions();
+    this.checkBarrierCollisions();
+    this.checkCoinCollisions();
+    this.checkPotionCollisons();
+  }
+
+  checkPotionCollisons() {
+    setInterval(() => {
+      this.level.potions.forEach((potion) => {
+        if (this.character.isColliding(potion) && this.statusBars[2].percentage !== 100) {
+          let percentage = this.statusBars[2].percentage;
+          percentage += 20;
+          this.statusBars[2].setPercentage(percentage);
+          this.removePotion(potion);
+        }
+      });
+    }, 100);
+  }
+
+  checkCoinCollisions() {
+    setInterval(() => {
+      this.level.coins.forEach((coin) => {
+        if (this.character.isColliding(coin) && this.statusBars[1].percentage !== 100) {
+          let percentage = this.statusBars[1].percentage;
+          percentage += 20;
+          this.statusBars[1].setPercentage(percentage);
+          this.removeCoin(coin);
+        }
+      });
+    }, 100);
+  }
+
+  removeCoin(coin) {
+    const index = this.level.coins.indexOf(coin);
+    this.level.coins.splice(index, 1);
+  }
+
+  removePotion(potion) {
+    const index = this.level.potions.indexOf(potion);
+    this.level.potions.splice(index, 1);
+  }
+
+  checkEnemyCollisions() {
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
         this.checkCharacterCollision(enemy);
         this.checkBubbleCollision(enemy);
       });
     }, 100);
+  }
+
+  checkBarrierCollisions() {
     setInterval(() => {
       this.level.barriers.forEach((barrier) => {
         this.checkBarrierCollision(barrier);
         this.checkIfCollisionOver(barrier);
         this.checkBubbleBarrierCollision(barrier);
-        /* console.log(this.blockSwimming);   */
       });
     }, 1000 / 60);
   }
@@ -92,6 +139,15 @@ class World {
 
   checkBubbleCollision(enemy) {
     this.throwableObjects.forEach((o) => {
+      if (o.isBubbleColliding(enemy) && enemy instanceof Endboss) {
+        
+        if (this.statusBars[2].percentage > 0) {
+          this.endboss.damage();
+          this.throwableObjects.shift();
+        } else {
+          this.throwableObjects.shift();
+        }
+      }
       if (
         o.isBubbleColliding(enemy) &&
         (enemy instanceof JellyFish || enemy instanceof SuperJellyFish)
@@ -105,10 +161,6 @@ class World {
         enemy.XSpeed = 4;
         enemy.offset.bottom = 0;
         this.throwableObjects.shift();
-      }
-      if (o.isBubbleColliding(enemy) && enemy instanceof Endboss) {
-        this.throwableObjects.shift();
-
       }
     });
   }
@@ -184,11 +236,14 @@ class World {
     this.addObjectsToMap(this.level.background);
     this.addObjectsToMap(this.level.barriers);
 
+    
+    this.addObjectsToMap(this.level.potions);
+    this.addObjectsToMap(this.level.coins);
+    this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.endboss);
     this.ctx.translate(-this.camera_x, 0);
     this.addObjectsToMap(this.statusBars);
     this.ctx.translate(this.camera_x, 0);
-
-    this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.addToMap(this.character);
 

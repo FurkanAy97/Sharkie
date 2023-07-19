@@ -7,12 +7,21 @@ class DrawableObject {
   imageCache = {};
   currentImage = 0;
   currentTransImage = 0;
+  currentDeathImage = 0;
 
   constructor() {}
 
   loadImage(imagePath) {
     this.img = new Image();
     this.img.src = imagePath;
+  }
+
+  loadImages(arr) {
+    arr.forEach((path) => {
+      let img = new Image();
+      img.src = path;
+      this.imageCache[path] = img;
+    });
   }
 
   draw(ctx) {
@@ -26,6 +35,8 @@ class DrawableObject {
       this instanceof JellyFish ||
       this instanceof SuperJellyFish ||
       this instanceof Barrier ||
+      this instanceof Coin ||
+      this instanceof Potion ||
       this instanceof Endboss
     ) {
       ctx.beginPath();
@@ -46,13 +57,5 @@ class DrawableObject {
       ctx.rect(this.x, this.y, this.width, this.height);
       ctx.stroke();
     }
-  }
-
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
   }
 }

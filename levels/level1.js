@@ -1,16 +1,16 @@
 const level1 = new Level(
   [
     new PufferFish(500, 40),
-    new PufferFish(800, 140),
-    new PufferFish(1000, 180),
+    new PufferFish(1700, 50),
+    new PufferFish(1000, 110),
     new PufferFish(1400, 180),
-    new PufferFish(1200, 240),
-    new JellyFish(500, 100),
-    new SuperJellyFish(1300, 300),
+    new PufferFish(1700, 300),
+    new JellyFish(500, 110),
+    new SuperJellyFish(1250, 300),
     new SuperJellyFish(1600, 170),
-    new SuperJellyFish(1300, 50),
-    new Endboss(),
+    new SuperJellyFish(1250, 10),
   ],
+  [new Endboss()],
   [
     new Background("img/3. Background/Layers/5. Water/D2.png", -719),
     new Background("img/3. Background/Layers/4.Fondo 2/D2.png", -719),
@@ -35,6 +35,22 @@ const level1 = new Level(
     new Background("img/3. Background/Layers/3.Fondo 1/D2.png", 719 * 3),
     new Background("img/3. Background/Layers/2. Floor/D2.png", 719 * 3),
   ],
-  [new Barrier("img/3. Background/Barrier/2.png", 720, 200, 400, 400),
-  new Barrier("img/3. Background/Barrier/2.png", 1200, 350, 400, 200)]
+  [
+    new Barrier("img/3. Background/Barrier/2.png", 720, 200, 400, 400),
+    new Barrier("img/3. Background/Barrier/2.png", 1200, 350, 400, 200),
+  ],
+  [
+    new Coin(600, 200),
+    new Coin(500, 300),
+    new Coin(700, 100),
+    new Coin(1200, 200),
+    new Coin(900, 50),
+  ],
+  [
+    new Potion(400, 400),
+    new Potion(900, 200),
+    new Potion(1150, 400),
+    new Potion(1700, 400),
+    new Potion(1900, 400),
+  ]
 );

@@ -1,12 +1,19 @@
 class Level {
   enemies;
+  endboss;
   background;
   barriers;
-  level_end_x = 720*3;
+  coins;
+  potions;
+  hearts;
+  level_end_x = 720 * 3;
 
-  constructor(enemies, background, barriers) {
+  constructor(enemies, endboss, background, barriers, coins, potions, hearts) {
     this.enemies = enemies;
     this.background = background;
     this.barriers = barriers;
+    this.coins = coins;
+    this.potions = potions;
+    this.endboss = endboss;
   }
 }

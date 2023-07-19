@@ -1,5 +1,8 @@
 class CoinBar extends StatusBar {
-    barType = "coin-bar";
+  barType = "coin-bar";
+
+  percentage = 0;
+  
   IMAGES = [
     "img/4. Marcadores/green/Coin/0_  copia 4.png",
     "img/4. Marcadores/green/Coin/20_  copia 2.png",

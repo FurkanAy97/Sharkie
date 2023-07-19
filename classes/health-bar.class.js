@@ -1,4 +1,4 @@
-class LifeBar extends StatusBar {
+class HealthBar extends StatusBar {
   barType = "life-bar";
 
   IMAGES = [
