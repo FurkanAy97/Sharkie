@@ -81,7 +81,7 @@ class Endboss extends Enemy {
       }
       i++;
 
-      if (this.world.character.x > 1500 && !this.bossSpawned) {
+      if (this.world.character.x > 100 && !this.bossSpawned) {
         this.currentImage = 0;
         i = 0;
         this.bossSpawned = true;

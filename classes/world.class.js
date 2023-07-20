@@ -138,29 +138,25 @@ class World {
   }
 
   checkBubbleCollision(enemy) {
-    this.throwableObjects.forEach((o) => {
-      if (o.isBubbleColliding(enemy) && enemy instanceof Endboss) {
-        
-        if (this.statusBars[2].percentage > 0) {
-          this.endboss.damage();
-          this.throwableObjects.shift();
-        } else {
+    const boss = this.endboss;
+    const healthBar = this.statusBars[2];
+
+    this.throwableObjects.forEach((bubble) => {
+      if (bubble.isBubbleColliding(boss)) {
+        if (healthBar.percentage > 0) {
+          boss.damage();
+        }
+        this.throwableObjects.shift();
+      } else if (bubble.isBubbleColliding(enemy)) {
+        if (enemy instanceof JellyFish || enemy instanceof SuperJellyFish) {
+          enemy.isDead = true;
+          this.removeJellyFish(enemy);
+        } else if (enemy instanceof PufferFish) {
+          enemy.transition = true;
+          enemy.XSpeed = 4;
+          enemy.offset.bottom = 0;
           this.throwableObjects.shift();
         }
-      }
-      if (
-        o.isBubbleColliding(enemy) &&
-        (enemy instanceof JellyFish || enemy instanceof SuperJellyFish)
-      ) {
-        console.log("colliding");
-        enemy.isDead = true;
-        this.removeJellyFish(enemy);
-      }
-      if (o.isBubbleColliding(enemy) && enemy instanceof PufferFish) {
-        enemy.transition = true;
-        enemy.XSpeed = 4;
-        enemy.offset.bottom = 0;
-        this.throwableObjects.shift();
       }
     });
   }
@@ -185,7 +181,7 @@ class World {
   }
 
   checkCharacterCollision(enemy) {
-    if (this.character.isColliding(enemy)) {
+    if (this.character.isColliding(enemy) || this.character.isColliding(this.endboss)) {
       if (enemy instanceof PufferFish && this.character.attacking) {
         enemy.isDead = true;
         enemy.knockBack();
@@ -236,7 +232,6 @@ class World {
     this.addObjectsToMap(this.level.background);
     this.addObjectsToMap(this.level.barriers);
 
-    
     this.addObjectsToMap(this.level.potions);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);

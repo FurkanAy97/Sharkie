@@ -6,9 +6,9 @@ const level1 = new Level(
     new PufferFish(1400, 180),
     new PufferFish(1700, 300),
     new JellyFish(500, 110),
-    new SuperJellyFish(1250, 300),
+    new SuperJellyFish(1300, 300),
     new SuperJellyFish(1600, 170),
-    new SuperJellyFish(1250, 10),
+    new SuperJellyFish(1300, 10),
   ],
   [new Endboss()],
   [
