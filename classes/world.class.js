@@ -60,6 +60,7 @@ class World {
     this.checkEnemyCollisions();
     this.checkBarrierCollisions();
     this.checkCoinCollisions();
+    this.checkHeartCollisions();
     this.checkPotionCollisons();
   }
 
@@ -81,7 +82,21 @@ class World {
           let percentage = this.statusBars[2].percentage;
           percentage += 20;
           this.statusBars[2].setPercentage(percentage);
-          this.removePotion(potion);
+          this.removeItem(this.level.potions,potion);
+        }
+      });
+    }, 100);
+  }
+
+  checkHeartCollisions(){
+    setInterval(() => {
+      this.level.hearts.forEach((heart) => {
+        if (this.character.isColliding(heart) && this.statusBars[0].percentage !== 100) {
+          this.playAudio("audio/heal.wav");
+          let percentage = this.statusBars[0].percentage;
+          percentage += 20;
+          this.statusBars[0].setPercentage(percentage);
+          this.removeItem(this.level.hearts ,heart);
         }
       });
     }, 100);
@@ -95,20 +110,15 @@ class World {
           let percentage = this.statusBars[1].percentage;
           percentage += 20;
           this.statusBars[1].setPercentage(percentage);
-          this.removeCoin(coin);
+          this.removeItem(this.level.coins, coin);
         }
       });
     }, 100);
   }
 
-  removeCoin(coin) {
-    const index = this.level.coins.indexOf(coin);
-    this.level.coins.splice(index, 1);
-  }
-
-  removePotion(potion) {
-    const index = this.level.potions.indexOf(potion);
-    this.level.potions.splice(index, 1);
+  removeItem(items,item){
+    const index = items.indexOf(item);
+    items.splice(index, 1);
   }
 
   checkEnemyCollisions() {
@@ -299,6 +309,7 @@ class World {
 
     this.addObjectsToMap(this.level.potions);
     this.addObjectsToMap(this.level.coins);
+    this.addObjectsToMap(this.level.hearts);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.endboss);
     this.ctx.translate(-this.camera_x, 0);

@@ -36,6 +36,7 @@ class DrawableObject {
       this instanceof SuperJellyFish ||
       this instanceof Barrier ||
       this instanceof Coin ||
+      this instanceof Heart ||
       this instanceof Potion ||
       this instanceof Endboss
     ) {

@@ -39,11 +39,11 @@ const level1 = new Level(
     new Barrier("img/3. Background/Barrier/2.png", 1200, 350, 400, 200),
   ],
   [
-    new Coin(600, 200),
     new Coin(500, 300),
+    new Coin(600, 200),
     new Coin(700, 100),
-    new Coin(1200, 200),
     new Coin(900, 50),
+    new Coin(1200, 200),
   ],
   [
     new Potion(400, 400),
@@ -51,5 +51,9 @@ const level1 = new Level(
     new Potion(1150, 400),
     new Potion(1700, 400),
     new Potion(1900, 400),
+  ], 
+  [
+    new Heart(1000, 50),
+    new Heart(300, 300)
   ]
 );

@@ -15,5 +15,6 @@ class Level {
     this.coins = coins;
     this.potions = potions;
     this.endboss = endboss;
+    this.hearts = hearts;
   }
 }
