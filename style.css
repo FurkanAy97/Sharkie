@@ -1,29 +1,87 @@
 body {
+    font-family: sans-serif;
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: rgb(18, 170, 178);
-    height: 95vh;
+    height: 100vh;
+    background-image: url('img/background.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    scroll-behavior: none;
 }
 
-canvas{
+canvas {
     background-color: black;
     display: block;
 }
 
-@media only screen and (max-width: 720px){
-    canvas{
+#mainDiv {
+    position: relative;
+    width: 720px;
+    height: 480px;
+}
+
+#startScreen {
+    position: absolute;
+    background-image: url('img/3. Background/Mesa de trabajo 1.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 720px;
+    height: 480px;
+    z-index: 2;
+    top: 0;
+    left: 0;
+}
+
+#startButton {
+    position: absolute;
+    width: 190px;
+    height: 63px;
+    right: 140px;
+    top: 130px;
+    cursor: pointer;
+    background-image: url('img/6.Botones/Start/2.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#startbutton:hover {
+    background-image: url('img/6.Botones/Start/1.png');
+}
+
+#howToPlayButton{
+    position: absolute;
+    width: 190px;
+    height: 63px;
+    right: 140px;
+    top: 130px;
+    cursor: pointer;
+    background-image: url('img/6.Botones/Start/2.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+
+
+@media only screen and (max-width: 720px) {
+    canvas {
         width: 100%;
     }
 }
 
-@media only screen and (max-height: 480px){
-    canvas{
+@media only screen and (max-height: 480px) {
+    canvas {
         height: 100vh;
     }
 
-    h1{
+    h1 {
         display: none;
     }
 }
