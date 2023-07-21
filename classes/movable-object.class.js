@@ -38,6 +38,12 @@ class MovableObject extends DrawableObject {
 
     if (timeSinceLastHit >= this.hitCooldown) {
       this.energy -= 20;
+      if (this.world.character.hitType == "poisoned") {
+        
+        this.world.playAudio('audio/hurt.wav')
+      } else {
+        this.world.playAudio('audio/shock.wav')
+      }
       if (this.energy <= 0) {
         this.energy = 0;
       }

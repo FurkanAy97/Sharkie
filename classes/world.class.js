@@ -9,6 +9,8 @@ class World {
   statusBars = [new HealthBar(), new CoinBar(), new PoisonBar()];
   throwableObjects = [];
   blockSwimming = false;
+  audioTimeout = false;
+  audioIsPlaying;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -16,13 +18,37 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    /* this.playWorldAudio() */
     this.checkCollisions();
+    this.handleBossAttack();
+    document.addEventListener("click", () => {
+      this.playWorldAudio();
+      document.removeEventListener("click", this.playWorldAudio);
+    });
   }
 
   playWorldAudio() {
-    let worldAudio = new Audio("audio/world-audio.mp3");
-    worldAudio.play();
+    if (!this.audioIsPlaying) {
+      let audio = new Audio("audio/level-music.mp3");
+      audio.loop = true;
+      this.audioIsPlaying = true;
+      audio.play();
+      setInterval(() => {
+        if (this.endboss.bossSpawned) {
+          audio.pause();
+        }
+      }, 1000 / 8);
+    }
+  }
+
+  playEndbossAudio() {
+    let audio = new Audio("audio/bossfight.mp3");
+    audio.loop = true;
+    audio.play();
+  }
+
+  playAudio(audioUrl) {
+    let audio = new Audio(audioUrl);
+    audio.play();
   }
 
   setWorld() {
@@ -37,10 +63,21 @@ class World {
     this.checkPotionCollisons();
   }
 
+  handleBossAttack() {
+    setInterval(() => {
+      if (this.character.isColliding(this.endboss)) {
+        this.endboss.isAttacking = true;
+      } else {
+        this.endboss.isAttacking = false;
+      }
+    }, 1000 / 8);
+  }
+
   checkPotionCollisons() {
     setInterval(() => {
       this.level.potions.forEach((potion) => {
         if (this.character.isColliding(potion) && this.statusBars[2].percentage !== 100) {
+          this.playAudio("audio/bottle.wav");
           let percentage = this.statusBars[2].percentage;
           percentage += 20;
           this.statusBars[2].setPercentage(percentage);
@@ -54,6 +91,7 @@ class World {
     setInterval(() => {
       this.level.coins.forEach((coin) => {
         if (this.character.isColliding(coin) && this.statusBars[1].percentage !== 100) {
+          this.playAudio("audio/coin.mp3");
           let percentage = this.statusBars[1].percentage;
           percentage += 20;
           this.statusBars[1].setPercentage(percentage);
@@ -139,12 +177,15 @@ class World {
 
   checkBubbleCollision(enemy) {
     const boss = this.endboss;
-    const healthBar = this.statusBars[2];
+    const poisonBar = this.statusBars[2];
 
     this.throwableObjects.forEach((bubble) => {
       if (bubble.isBubbleColliding(boss)) {
-        if (healthBar.percentage > 0) {
+        if (poisonBar.percentage > 0) {
           boss.damage();
+          this.playAudio("audio/damage.wav");
+        } else {
+          this.playAudio("audio/bluh.wav");
         }
         this.throwableObjects.shift();
       } else if (bubble.isBubbleColliding(enemy)) {
@@ -152,13 +193,18 @@ class World {
           enemy.isDead = true;
           this.removeJellyFish(enemy);
         } else if (enemy instanceof PufferFish) {
-          enemy.transition = true;
-          enemy.XSpeed = 4;
-          enemy.offset.bottom = 0;
-          this.throwableObjects.shift();
+          this.initPufferfishTransform(enemy);
         }
       }
     });
+  }
+
+  initPufferfishTransform(enemy) {
+    this.playAudio("audio/bluh.wav");
+    enemy.transition = true;
+    enemy.XSpeed = 4;
+    enemy.offset.bottom = 0;
+    this.throwableObjects.shift();
   }
 
   removeJellyFish(enemy) {
@@ -183,31 +229,42 @@ class World {
   checkCharacterCollision(enemy) {
     if (this.character.isColliding(enemy) || this.character.isColliding(this.endboss)) {
       if (enemy instanceof PufferFish && this.character.attacking) {
-        enemy.isDead = true;
-        enemy.knockBack();
-        setTimeout(() => {
-          this.removePufferfish(enemy);
-        }, 500);
+        this.handlePufferfishDamage(enemy);
       } else {
+        this.handleEnemyHitType(enemy);
         this.character.hit();
       }
-      this.statusBars.forEach((bar) => {
-        if (bar.barType == "life-bar") {
-          bar.setPercentage(this.character.energy);
-        }
-      });
-      if (enemy.enemyType === "puffer-fish") {
-        this.character.hitType = "poisoned";
-      } else if (enemy.enemyType === "jelly-fish") {
-        this.character.hitType = "shocked";
-      }
-      if (this.character.energy <= 0 && this.character.isDead == false) {
-        this.character.isDead = true;
-        this.character.lastHitType = enemy.enemyType === "puffer-fish" ? "poisoned" : "shocked";
-        console.log("dead");
-      }
-      console.log(this.character.energy, this.character.lastHitType, this.character.hitType);
+      this.updateLifeBar();
+      this.checkIfCharDead(enemy);
     }
+  }
+
+  checkIfCharDead(enemy) {
+    if (this.character.energy <= 0 && !this.character.isDead) {
+      this.character.isDead = true;
+      this.character.lastHitType = enemy.enemyType === "puffer-fish" ? "poisoned" : "shocked";
+    }
+  }
+
+  handleEnemyHitType(enemy) {
+    if (enemy.enemyType === "jelly-fish") {
+      this.character.hitType = "shocked";
+    } else if (enemy.enemyType === "puffer-fish" || enemy.enemyType === "endBoss") {
+      this.character.hitType = "poisoned";
+    }
+  }
+
+  handlePufferfishDamage(enemy) {
+    enemy.isDead = true;
+    enemy.knockBack();
+    if (!this.audioTimeout) {
+      this.playAudio("audio/damage.wav");
+      this.audioTimeout = true;
+    }
+    setTimeout(() => {
+      this.removePufferfish(enemy);
+      this.audioTimeout = false;
+    }, 500);
   }
 
   removePufferfish(enemy) {
@@ -215,6 +272,14 @@ class World {
     if (index !== -1) {
       this.level.enemies.splice(index, 1);
     }
+  }
+
+  updateLifeBar() {
+    this.statusBars.forEach((bar) => {
+      if (bar.barType === "life-bar") {
+        bar.setPercentage(this.character.energy);
+      }
+    });
   }
 
   jellyfishKnockback(enemy) {

@@ -137,8 +137,8 @@ class Character extends MovableObject {
         this.shoot();
         this.isShooting();
       }
-      if (this.world.keyboard.D && !this.tailCooldown ) {
-        this.tailAttack(); 
+      if (this.world.keyboard.D && !this.tailCooldown) {
+        this.tailAttack();
         this.isTailAttacking();
       }
       this.world.camera_x = -this.x + 70;
@@ -149,14 +149,14 @@ class Character extends MovableObject {
         this.playTailAttackAnimation(this.IMAGES_TAILATTACK);
       } else if (this.shooting) {
         this.playShootingAnimation(this.IMAGES_SHOOTING);
-      } else if (this.isHurt() && this.hitType == "poisoned") {
-        this.playAnimation(this.IMAGES_POISONED);
-      } else if (this.isHurt() && this.hitType == "shocked") {
-        this.playAnimation(this.IMAGES_SHOCKED);
       } else if (this.lastHitType == "poisoned") {
         this.playAnimation(this.IMAGES_POISONED_DEATH);
       } else if (this.lastHitType == "shocked") {
         this.playAnimation(this.IMAGES_SHOCKED_DEATH);
+      } else if (this.isHurt() && this.hitType == "shocked") {
+        this.playAnimation(this.IMAGES_SHOCKED);
+      } else if (this.isHurt() && this.hitType == "poisoned") {
+        this.playAnimation(this.IMAGES_POISONED);
       } else if (this.isSwimming) {
         this.playAnimation(this.IMAGES_SWIMMING);
       } else {
@@ -184,6 +184,7 @@ class Character extends MovableObject {
           this.otherDirection
         )
       );
+      this.world.playAudio("audio/bubble.mp3");
     }, 800);
     this.cooldown = true;
     setTimeout(() => {
@@ -196,9 +197,7 @@ class Character extends MovableObject {
     setTimeout(() => {
       this.tailCooldown = false;
     }, 1000);
-  } 
-
-  
+  }
 
   isShooting() {
     this.shooting = true;
