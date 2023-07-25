@@ -270,18 +270,18 @@ class World {
   }
 
   gameOverScreen() {
-   if (!this.gameOver) {
-     document.getElementById("gameoverScreen").style.display = "block";
-     document.getElementById("canvas").style.display = "none";
-     this.hideUI();
+    if (!this.gameOver) {
+      document.getElementById("gameoverScreen").style.display = "block";
+      document.getElementById("canvas").style.display = "none";
+      this.hideUI();
     }
   }
-  
-  hideUI(){
+
+  hideUI() {
     document.getElementById("muteButton").style.visibility = "hidden";
     document.getElementById("hitboxButton").style.visibility = "hidden";
     document.getElementById("title").style.visibility = "hidden";
-    document.getElementById("mainDiv").style.border = 'none'
+    document.getElementById("mainDiv").style.border = "none";
   }
 
   handleEnemyHitType(enemy) {

@@ -10,6 +10,10 @@ function init() {
   world = new World(canvas, keyboard, muted);
 }
 
+function resetGame() {
+  location.reload();
+}
+
 function mute() {
   let muteButton = document.getElementById("muteButton");
 
@@ -33,7 +37,7 @@ function mute() {
 }
 
 function toggleFrames() {
-  world.framesActive = !world.framesActive
+  world.framesActive = !world.framesActive;
 }
 
 const keyState = {};
