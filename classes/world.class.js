@@ -1,6 +1,6 @@
 class World {
   character = new Character();
-  
+
   level = level1;
   endboss = this.level.endboss.find((e) => e instanceof Endboss);
   canvas;
@@ -11,45 +11,54 @@ class World {
   throwableObjects = [];
   blockSwimming = false;
   audioTimeout = false;
-  audioIsPlaying;
+  muted;
+  framesActive;
+  gameOver = false;
 
-  constructor(canvas, keyboard) {
+  constructor(canvas, keyboard, muted) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.muted = muted;
     this.draw();
     this.setWorld();
     this.checkCollisions();
     this.handleBossAttack();
-    document.addEventListener("click", () => {
-      this.playWorldAudio();
-      document.removeEventListener("click", this.playWorldAudio);
-    });
+    this.playWorldAudio();
+    document.removeEventListener("click", this.playWorldAudio);
   }
 
   playWorldAudio() {
-    if (!this.audioIsPlaying) {
+    if (!this.muted) {
       let audio = new Audio("audio/level-music.mp3");
       audio.loop = true;
-      this.audioIsPlaying = true;
       audio.play();
       setInterval(() => {
-        if (this.endboss.bossSpawned) {
-          audio.pause();
+        if (this.endboss.bossSpawned || this.muted) {
+          audio.pause(audio);
         }
       }, 1000 / 8);
     }
   }
 
   playEndbossAudio() {
-    let audio = new Audio("audio/bossfight.mp3");
-    audio.loop = true;
-    audio.play();
+    if (!this.muted && this.endboss.bossSpawned) {
+      let audio = new Audio("audio/bossfight.mp3");
+      audio.loop = true;
+      audio.play();
+      setInterval(() => {
+        if (this.muted) {
+          audio.pause(audio);
+        }
+      }, 1000 / 8);
+    }
   }
 
   playAudio(audioUrl) {
-    let audio = new Audio(audioUrl);
-    audio.play();
+    if (!this.muted) {
+      let audio = new Audio(audioUrl);
+      audio.play();
+    }
   }
 
   setWorld() {
@@ -83,13 +92,13 @@ class World {
           let percentage = this.statusBars[2].percentage;
           percentage += 20;
           this.statusBars[2].setPercentage(percentage);
-          this.removeItem(this.level.potions,potion);
+          this.removeItem(this.level.potions, potion);
         }
       });
     }, 100);
   }
 
-  checkHeartCollisions(){
+  checkHeartCollisions() {
     setInterval(() => {
       this.level.hearts.forEach((heart) => {
         if (this.character.isColliding(heart) && this.statusBars[0].percentage !== 100) {
@@ -97,7 +106,7 @@ class World {
           let percentage = this.statusBars[0].percentage;
           percentage += 20;
           this.statusBars[0].setPercentage(percentage);
-          this.removeItem(this.level.hearts ,heart);
+          this.removeItem(this.level.hearts, heart);
         }
       });
     }, 100);
@@ -117,7 +126,7 @@ class World {
     }, 100);
   }
 
-  removeItem(items,item){
+  removeItem(items, item) {
     const index = items.indexOf(item);
     items.splice(index, 1);
   }
@@ -254,7 +263,25 @@ class World {
     if (this.character.energy <= 0 && !this.character.isDead) {
       this.character.isDead = true;
       this.character.lastHitType = enemy.enemyType === "puffer-fish" ? "poisoned" : "shocked";
+      this.playAudio("audio/game-over.wav");
+      this.muted = true;
+      this.gameOverScreen();
     }
+  }
+
+  gameOverScreen() {
+   if (!this.gameOver) {
+     document.getElementById("gameoverScreen").style.display = "block";
+     document.getElementById("canvas").style.display = "none";
+     this.hideUI();
+    }
+  }
+  
+  hideUI(){
+    document.getElementById("muteButton").style.visibility = "hidden";
+    document.getElementById("hitboxButton").style.visibility = "hidden";
+    document.getElementById("title").style.visibility = "hidden";
+    document.getElementById("mainDiv").style.border = 'none'
   }
 
   handleEnemyHitType(enemy) {
@@ -339,7 +366,9 @@ class World {
     }
 
     o.draw(this.ctx);
-    o.drawFrame(this.ctx);
+    if (this.framesActive) {
+      o.drawFrame(this.ctx);
+    }
 
     if (o.otherDirection) {
       this.flipImageBack(o);

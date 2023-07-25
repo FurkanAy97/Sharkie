@@ -1,5 +1,10 @@
+@font-face {
+    font-family: "Luckiest Guy";
+    src: url("img/5.Font/LuckiestGuy-Regular.ttf") format("truetype");
+}
+
 body {
-    font-family: sans-serif;
+    font-family: 'Luckiest Guy';
     margin: 0;
     display: flex;
     align-items: center;
@@ -13,6 +18,12 @@ body {
     scroll-behavior: none;
 }
 
+#title {
+    color: white;
+    font-size: 50px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+}
+
 canvas {
     background-color: black;
     display: block;
@@ -22,7 +33,11 @@ canvas {
     position: relative;
     width: 720px;
     height: 480px;
+    border: 15px solid black;
+    border-radius: 15px;
+    
 }
+
 
 #startScreen {
     position: absolute;
@@ -36,6 +51,49 @@ canvas {
     top: 0;
     left: 0;
 }
+
+#endScreen {
+    position: absolute;
+    background-image: url('img/6.Botones/Tittles/You win/Recurso 21.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 720px;
+    height: 480px;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+#gameoverScreen {
+    position: absolute;
+    background-image: url('img/6.Botones/Tittles/Game Over/Recurso 12.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 720px;
+    height: 480px;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.playAgainBtn {
+    position: absolute;
+    width: 190px;
+    height: 63px;
+    right: 240px;
+    top: 340px;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 25px;
+    font-family: Luckiest Guy;
+    background-color: #7FFFE0;
+    border: white 4px solid;
+}
+
 
 #startButton {
     position: absolute;
@@ -54,7 +112,36 @@ canvas {
     background-image: url('img/6.Botones/Start/1.png');
 }
 
-#howToPlayButton{
+#hitboxButton {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 60px;
+    top: 10px;
+    cursor: pointer;
+    background-image: url('img/square.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    visibility: hidden;
+}
+
+#muteButton {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    background-image: url('img/unmute.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+
+#howToPlayButton {
     position: absolute;
     width: 190px;
     height: 63px;

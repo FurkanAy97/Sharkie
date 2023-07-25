@@ -1,6 +1,9 @@
 let level1;
 function initLevel() {
-  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('startScreen').style.visibility = 'hidden';
+  document.getElementById('muteButton').style.visibility = 'visible';
+  document.getElementById('hitboxButton').style.visibility = 'visible';
+
   level1 = new Level(
     [
       new PufferFish(500, 40),

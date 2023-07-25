@@ -1,11 +1,39 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let paused = false;
+let muted = false;
 
 function init() {
   initLevel();
   canvas = document.getElementById("canvas");
-  world = new World(canvas, keyboard);
+  world = new World(canvas, keyboard, muted);
+}
+
+function mute() {
+  let muteButton = document.getElementById("muteButton");
+
+  if (!muted) {
+    muteButton.style.backgroundImage = "url(img/mute.png)";
+    muted = true;
+    if (world) {
+      world.muted = true;
+    }
+  } else {
+    muteButton.style.backgroundImage = "url('img/unmute.png')";
+    muted = false;
+    if (world) {
+      world.muted = false;
+    }
+  }
+  if (world) {
+    world.playWorldAudio();
+    world.playEndbossAudio();
+  }
+}
+
+function toggleFrames() {
+  world.framesActive = !world.framesActive
 }
 
 const keyState = {};
@@ -33,7 +61,6 @@ window.addEventListener("keydown", (event) => {
     keyboard.D = true;
   }
 });
-
 
 window.addEventListener("keyup", (event) => {
   const key = event.key;

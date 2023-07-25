@@ -14,6 +14,7 @@ class Endboss extends Enemy {
   moveLeft = false;
   enemyType = "endBoss";
   bossSpawned = false;
+  firstBossSpawn = false;
   attackCooldown = false;
   world;
   health = 3;
@@ -100,11 +101,12 @@ class Endboss extends Enemy {
       }
       i++;
 
-      if (this.world.character.x > 1500 && !this.bossSpawned) {
-        this.world.playEndbossAudio();
+      if (this.world.character.x > 1500 && !this.firstBossSpawn) {
         this.currentImage = 0;
         i = 0;
+        this.firstBossSpawn = true;
         this.bossSpawned = true;
+        this.world.playEndbossAudio();
       }
     }, 1000 / 8);
   }
@@ -114,7 +116,6 @@ class Endboss extends Enemy {
       if (this.bossSpawned) {
         this.checkIfUpOrDown();
         this.changeDirection();
-        
       }
     }, 1000 / 60);
   }
@@ -140,14 +141,13 @@ class Endboss extends Enemy {
       this.moveDown = !this.moveDown;
     }
     if (this.x < 1500) {
-      this.moveLeft = !this.moveLeft
+      this.moveLeft = !this.moveLeft;
       this.otherDirection = !this.otherDirection;
     }
     if (this.x > 2100) {
-      this.moveLeft = !this.moveLeft
+      this.moveLeft = !this.moveLeft;
       this.otherDirection = !this.otherDirection;
     }
-    
   }
 
   deathAnimation() {
@@ -159,8 +159,19 @@ class Endboss extends Enemy {
       } else {
         clearInterval(intervalId);
         this.isDead = false;
+        this.youwinScreen();
       }
     }, 1000 / 10);
+  }
+
+  youwinScreen() {
+    document.getElementById("endScreen").style.display = "block";
+    document.getElementById("gameoverScreen").style.display = "none";
+    document.getElementById("canvas").style.display = "none";
+    this.world.hideUI();
+    this.world.playAudio("audio/victory.wav");
+    this.world.muted = true;
+    this.world.gameOver = true;
   }
 
   hurtAnimation() {

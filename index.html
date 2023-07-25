@@ -34,12 +34,22 @@
     <script src="js/game.js"></script>
   </head>
   <body >
-    <h1>Sharky</h1>
+    <h1 id="title">Sharky</h1>
     <div id="mainDiv">
       <div id="startScreen">
-        <!-- <img id="startbutton" src="img/6.Botones/Start/2.png" > -->
         <div id="startButton" onclick="init()" ></div>
+        <div id="muteButton" onclick="mute()"></div>
+        <div id="hitboxButton" onclick="toggleFrames()"></div>
         <div id="howToPlayButton" onclick="init()" ></div>
+      </div>
+      <div id="endScreen">
+        <div id="youWinLayer">
+          <button class="playAgainBtn">Play Again</button>
+        </div>
+      </div>
+      <div id="gameoverScreen">
+        <button class="playAgainBtn">Try Again</button>
+
       </div>
 
       <canvas id="canvas" width="720px" height="480px"> </canvas>
