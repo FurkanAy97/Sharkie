@@ -111,6 +111,65 @@ canvas {
     background-image: url('img/6.Botones/Start/1.png');
 }
 
+.button{
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    z-index: 3;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: white;
+    border-radius: 100px;
+    border: 1px solid black;
+    outline: 1px solid black;
+    display: none;
+}
+
+#btnLeft{
+    position: absolute;
+    left: 30px;
+    bottom: 60px;
+    background-image: url('img/arrow-left.png');
+}
+
+#btnRight{
+    position: absolute;
+    left: 128px;
+    bottom: 60px;
+    background-image: url('img/arrow-right.png');
+}
+
+#btnUp{
+    position: absolute;
+    left: 80px;
+    bottom: 110px;
+    background-image: url('img/arrow-up.png');
+}
+
+#btnDown{
+    position: absolute;
+    left: 80px;
+    bottom: 10px;
+    background-image: url('img/arrow-down.png');
+}
+
+#bubbleBtn{
+    position: absolute;
+    right: 50px;
+    bottom: 80px;
+    background-image: url('img/bubble.png');
+}
+
+#attackBtn{
+    position: absolute;
+    right: 100px;
+    bottom: 30px;
+    background-image: url('img/attack.png');
+}
+
+
+
 #hitboxButton {
     position: absolute;
     width: 30px;
