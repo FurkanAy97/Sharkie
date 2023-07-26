@@ -285,9 +285,9 @@ class World {
   }
 
   handleEnemyHitType(enemy) {
-    if (enemy.enemyType === "jelly-fish") {
+    if (enemy instanceof JellyFish) {
       this.character.hitType = "shocked";
-    } else if (enemy.enemyType === "puffer-fish" || enemy.enemyType === "endBoss") {
+    } else {
       this.character.hitType = "poisoned";
     }
   }

@@ -42,7 +42,7 @@ function toggleFrames() {
 }
 
 function handleWindowResize() {
-  if (window.innerWidth < 750) {
+  if (window.innerWidth < 750 && window.innerHeight > 390) {
     showRotateNotification();
   } else {
     showGame();

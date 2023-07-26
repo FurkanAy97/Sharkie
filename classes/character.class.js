@@ -141,7 +141,7 @@ class Character extends MovableObject {
         this.tailAttack();
         this.isTailAttacking();
       }
-      this.world.camera_x = -this.x + 70;
+      this.world.camera_x = -this.x + 140;
     }, 1000 / 60);
 
     setInterval(() => {
