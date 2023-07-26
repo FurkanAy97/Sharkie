@@ -33,14 +33,13 @@
 
     <script src="js/game.js"></script>
   </head>
-  <body >
+  <body onload="handleWindowResize()">
     <h1 id="title">Sharky</h1>
     <div id="mainDiv">
       <div id="startScreen">
         <div id="startButton" onclick="init()" ></div>
         <div id="muteButton" onclick="mute()"></div>
         <div id="hitboxButton" onclick="toggleFrames()"></div>
-        <div id="howToPlayButton" onclick="init()" ></div>
       </div>
       <div id="endScreen">
         <div id="youWinLayer">
@@ -54,5 +53,6 @@
 
       <canvas id="canvas" width="720px" height="480px"> </canvas>
     </div>
+    <div id="rotateNotification">Please Rotate your Device</div>
   </body>
 </html>

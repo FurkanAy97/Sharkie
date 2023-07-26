@@ -40,6 +40,32 @@ function toggleFrames() {
   world.framesActive = !world.framesActive;
 }
 
+function handleWindowResize() {
+  if (window.innerWidth < 750) {
+    showRotateNotification();
+  } else {
+    showGame();
+  }
+}
+
+window.addEventListener("resize", handleWindowResize);
+
+function showRotateNotification() {
+  document.getElementById("mainDiv").style.display = "none";
+  document.getElementById("title").style.display = "none";
+  document.getElementById("rotateNotification").style.display = "flex";
+}
+
+function showGame() {
+  document.getElementById("mainDiv").style.display = "block";
+  if (window.innerHeight > 480) {
+    document.getElementById("title").style.display = "block";
+  } else {
+    document.getElementById("title").style.display = "none";
+  }
+  document.getElementById("rotateNotification").style.display = "none";
+}
+
 const keyState = {};
 
 window.addEventListener("keydown", (event) => {

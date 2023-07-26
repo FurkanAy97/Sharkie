@@ -15,7 +15,7 @@ body {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    scroll-behavior: none;
+    overflow: hidden;
 }
 
 #title {
@@ -35,7 +35,6 @@ canvas {
     height: 480px;
     border: 15px solid black;
     border-radius: 15px;
-    
 }
 
 
@@ -154,13 +153,40 @@ canvas {
     background-repeat: no-repeat;
 }
 
+#rotateNotification {
+    font-size: 40px;
+    color: #7FFFE0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+    text-align: center;
+    width: 720px;
+    height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-wrap: break-word;
+}
 
 
 
-@media only screen and (max-width: 720px) {
+
+@media only screen and (max-width: 750px) {
     canvas {
         width: 100%;
     }
+
+    #mainDiv {
+        height: auto;
+        width: 100%;
+    }
+
+    #startScreen {
+        width: 100%;
+    }
+
+    #rotateNotification{
+        width: 100%;
+    }
+
 }
 
 @media only screen and (max-height: 480px) {
@@ -168,7 +194,18 @@ canvas {
         height: 100vh;
     }
 
-    h1 {
+    #mainDiv {
+        height: 100vh;
+        width: auto;
+    }
+
+    #startScreen {
+        height: 100vh;
+        width: 100%;
+        background-size: cover;
+    }
+
+    #title {
         display: none;
     }
 }
