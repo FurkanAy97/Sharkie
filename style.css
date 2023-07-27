@@ -93,6 +93,13 @@ canvas {
     padding: 0 8px;
 }
 
+.mobileKey {
+    height: 30px;
+    background-color: white;
+    margin: 0 8px;
+    border-radius: 30px;
+}
+
 .bottle {
     height: 70px;
     padding: 0 8px;
