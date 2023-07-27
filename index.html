@@ -37,16 +37,35 @@
     <h1 id="title">Sharky</h1>
     <div id="mainDiv">
       <div id="startScreen">
-        <div id="startButton" onclick="init()" ></div>
-        <div id="howToPlayBtn" onclick="openHowToPlay()" >How to play</div>
+        <div id="startButton" onclick="init()"></div>
+        <div id="howToPlayBtn" onclick="openHowToPlay()">How to play</div>
         <div id="muteButton" onclick="mute()"></div>
         <div id="hitboxButton" onclick="toggleFrames()"></div>
       </div>
       <div id="howToPlayScreen">
-        <div class="instruction">use <img class="navKey" src="img/6.Botones/Key/arrow keys.png"> to navigate</div>
-        <div class="instruction">use <img class="key" src="img/6.Botones/Key/Space Bar key.png">/<img class="mobileKey" src="img/bubble.png"> to beat <img class="enemyImg" src="img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png"><img class="enemyImg" src="img/2.Enemy/2 Jelly fish/Súper dangerous/Green 1.png"></div>
-        <div class="instruction">use <img class="key" src="img/6.Botones/Key/D key.png">/ <img class="mobileKey" src="img/attack.png"> to beat <img class="enemyImg" src="img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png"></div>
-        <div class="instruction">use <img class="bottle" src="img/4. Marcadores/Posión/Animada/1.png"> to beat <img class="bossImg" src="img/2.Enemy/3 Final Enemy/instruction.png"></div>
+        <div class="instruction">
+          use <img class="navKey" src="img/6.Botones/Key/arrow keys.png" /> to navigate
+        </div>
+        <div class="instruction">
+          use <img class="key" src="img/6.Botones/Key/Space Bar key.png" />/<img
+            class="mobileKey"
+            src="img/bubble.png" />
+          to beat
+          <img class="enemyImg" src="img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png" /><img
+            class="enemyImg"
+            src="img/2.Enemy/2 Jelly fish/Súper dangerous/Green 1.png" />
+        </div>
+        <div class="instruction">
+          use <img class="key" src="img/6.Botones/Key/D key.png" />/
+          <img class="mobileKey" src="img/attack.png" /> to beat
+          <img
+            class="enemyImg"
+            src="img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png" />
+        </div>
+        <div class="instruction">
+          use <img class="bottle" src="img/4. Marcadores/Posión/Animada/1.png" /> to beat
+          <img class="bossImg" src="img/2.Enemy/3 Final Enemy/instruction.png" />
+        </div>
         <div id="goBackBtn" onclick="closeHowToPlay()">Go Back</div>
       </div>
       <div id="btnUp" class="button"></div>
@@ -55,17 +74,14 @@
       <div id="btnLeft" class="button"></div>
       <div id="bubbleBtn" class="button"></div>
       <div id="attackBtn" class="button"></div>
-      <div id="endScreen">
-        <div id="youWinLayer">
-          <button class="playAgainBtn" onclick="resetGame()">Play Again</button>
-        </div>
-      </div>
-      <div id="gameoverScreen">
-        <button class="playAgainBtn" onclick="resetGame()">Try Again</button>
-
-      </div>
 
       <canvas id="canvas" width="720px" height="480px"> </canvas>
+    </div>
+    <div id="endScreen">
+      <button class="playAgainBtn" onclick="resetGame()">Play Again</button>
+    </div>
+    <div id="gameoverScreen">
+      <button class="playAgainBtn" onclick="resetGame()">Try Again</button>
     </div>
     <div id="rotateNotification">Please Rotate your Device</div>
   </body>

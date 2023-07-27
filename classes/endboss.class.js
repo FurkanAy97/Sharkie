@@ -172,6 +172,8 @@ class Endboss extends Enemy {
     this.world.playAudio("audio/victory.wav");
     this.world.muted = true;
     this.world.gameOver = true;
+    gameStarted = false;
+    handleWindowResize();
   }
 
   hurtAnimation() {

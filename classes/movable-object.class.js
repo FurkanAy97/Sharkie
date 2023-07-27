@@ -6,7 +6,7 @@ class MovableObject extends DrawableObject {
   otherDirection = false;
   energy = 100;
   lastHitTime = 0;
-  hitCooldown = 1000; // 1 second cooldown
+  hitCooldown = 1000; 
   lastHitType = "none";
   hitType = "none";
   lastShootTime = 0;
@@ -39,10 +39,9 @@ class MovableObject extends DrawableObject {
     if (timeSinceLastHit >= this.hitCooldown) {
       this.energy -= 20;
       if (this.world.character.hitType == "poisoned") {
-        
-        this.world.playAudio('audio/hurt.wav')
+        this.world.playAudio("audio/hurt.wav");
       } else {
-        this.world.playAudio('audio/shock.wav')
+        this.world.playAudio("audio/shock.wav");
       }
       if (this.energy <= 0) {
         this.energy = 0;
@@ -122,7 +121,7 @@ class MovableObject extends DrawableObject {
     this.currentShootingImage++;
   }
 
-  playTailAttackAnimation(images){
+  playTailAttackAnimation(images) {
     let i = this.currentTailAttackImage % images.length;
     let path = images[i];
     this.img = this.imageCache[path];

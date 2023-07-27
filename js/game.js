@@ -3,24 +3,27 @@ let world;
 let keyboard = new Keyboard();
 let paused = false;
 let muted = false;
+let gameStarted = false;
 
 function init() {
   initLevel();
   mobileBtnEvents();
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard, muted);
+  gameStarted = true
+  handleWindowResize();
 }
 
 function resetGame() {
   location.reload();
 }
 
-function openHowToPlay(){
-  document.getElementById('howToPlayScreen').style.display = 'flex'
+function openHowToPlay() {
+  document.getElementById("howToPlayScreen").style.display = "flex";
 }
 
-function closeHowToPlay(){
-  document.getElementById('howToPlayScreen').style.display = 'none'
+function closeHowToPlay() {
+  document.getElementById("howToPlayScreen").style.display = "none";
 }
 
 function mute() {
@@ -56,7 +59,7 @@ function handleWindowResize() {
     showGame();
   }
 
-  if (window.innerHeight < 480) {
+  if (window.innerHeight < 480 && gameStarted == true) {
     buttons = document.querySelectorAll(".button");
     buttons.forEach((btn) => {
       btn.style.display = "block";

@@ -118,7 +118,7 @@ canvas {
 
 
 #endScreen {
-    position: absolute;
+
     background-image: url('img/6.Botones/Tittles/You win/Recurso 21.png');
     background-position: center;
     background-size: contain;
@@ -126,13 +126,11 @@ canvas {
     width: 720px;
     height: 480px;
     z-index: 2;
-    top: 0;
-    left: 0;
+
     display: none;
 }
 
 #gameoverScreen {
-    position: absolute;
     background-image: url('img/6.Botones/Tittles/Game Over/Recurso 12.png');
     background-position: center;
     background-size: contain;
@@ -140,8 +138,7 @@ canvas {
     width: 720px;
     height: 480px;
     z-index: 2;
-    top: 0;
-    left: 0;
+
     display: none;
 }
 
@@ -344,6 +341,10 @@ canvas {
         width: 100%;
     }
 
+    #howToPlayScreen {
+        width: 100%;
+    }
+
     #rotateNotification {
         width: 100%;
     }
@@ -364,6 +365,34 @@ canvas {
         height: 100vh;
         width: 100%;
         background-size: cover;
+    }
+
+    #howToPlayScreen {
+        height: 100vh;
+        width: 100%;
+        background-size: cover;
+    }
+
+    #gameoverScreen {
+        width: 100%;
+        background-size: contain;
+        margin-bottom: 200px;
+    }
+
+    #endScreen {
+        width: 100%;
+        background-size: contain;
+        margin-bottom: 200px;
+    }
+
+    .instruction {
+        font-size: 25px;
+        margin: 4px;
+    }
+
+    .playAgainBtn {
+        right: 330px;
+        top: 260px;
     }
 
     #title {

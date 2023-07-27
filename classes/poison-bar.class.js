@@ -1,5 +1,5 @@
 class PoisonBar extends StatusBar {
-    barType = "poison-bar";
+  barType = "poison-bar";
   IMAGES = [
     "img/4. Marcadores/green/poisoned bubbles/0_ copia 2.png",
     "img/4. Marcadores/green/poisoned bubbles/20_ copia 3.png",

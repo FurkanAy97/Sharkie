@@ -266,6 +266,8 @@ class World {
       this.playAudio("audio/game-over.wav");
       this.muted = true;
       this.gameOverScreen();
+      gameStarted = false;
+      handleWindowResize();
     }
   }
 
