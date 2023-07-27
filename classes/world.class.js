@@ -13,7 +13,6 @@ class World {
   audioTimeout = false;
   muted;
   framesActive;
-  gameOver = false;
 
   constructor(canvas, keyboard, muted) {
     this.ctx = canvas.getContext("2d");
@@ -276,16 +275,16 @@ class World {
       this.playAudio("audio/game-over.wav");
       this.muted = true;
       this.gameOverScreen();
-      gameOver = true;
       handleWindowResize();
     }
   }
 
   gameOverScreen() {
-    if (!this.gameOver) {
+    if (gameIsRunning) {
       document.getElementById("gameoverScreen").style.display = "flex";
       document.getElementById("canvas").style.display = "none";
-      this.gameOver = true;
+      gameIsRunning = false
+      gameOver = true;
       this.hideUI();
     }
   }

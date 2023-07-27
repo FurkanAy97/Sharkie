@@ -3,15 +3,16 @@ let world;
 let keyboard = new Keyboard();
 let paused = false;
 let muted = false;
-let gameStarted = false;
+let gameIsRunning = false;
 let gameOver = false;
+let youWin = false;
 
 function init() {
   initLevel();
   mobileBtnEvents();
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard, muted);
-  gameStarted = true;
+  gameIsRunning = true;
   handleWindowResize();
 }
 
@@ -60,7 +61,7 @@ function handleWindowResize() {
     showGame();
   }
 
-  if (window.innerHeight < 480 && gameStarted == true) {
+  if (window.innerHeight < 480 && gameIsRunning == true) {
     buttons = document.querySelectorAll(".button");
     buttons.forEach((btn) => {
       btn.style.display = "block";
@@ -78,12 +79,20 @@ window.addEventListener("resize", handleWindowResize);
 function showRotateNotification() {
   document.getElementById("mainDiv").style.display = "none";
   document.getElementById("title").style.display = "none";
+  document.getElementById("endScreen").style.display = "none";
+  document.getElementById("gameoverScreen").style.display = "none";
   document.getElementById("rotateNotification").style.display = "flex";
 }
 
 function showGame() {
-  if (!gameOver) {
+  if (gameIsRunning) {
     document.getElementById("mainDiv").style.display = "block";
+  }
+  if (gameOver) {
+    document.getElementById("gameoverScreen").style.display = "flex";
+  }
+  if (youWin) {
+    document.getElementById("endScreen").style.display = "flex";
   }
   if (window.innerHeight > 480) {
     document.getElementById("title").style.display = "block";

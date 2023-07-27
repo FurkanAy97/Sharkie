@@ -172,8 +172,8 @@ class Endboss extends Enemy {
     this.world.hideUI();
     this.world.playAudio("audio/victory.wav");
     this.world.muted = true;
-    this.world.gameOver = true;
-    gameOver = true
+    youWin = true;
+    gameIsRunning = false
     handleWindowResize();
   }
 
