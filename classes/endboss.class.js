@@ -165,9 +165,10 @@ class Endboss extends Enemy {
   }
 
   youwinScreen() {
-    document.getElementById("endScreen").style.display = "block";
+    document.getElementById("endScreen").style.display = "flex";
     document.getElementById("gameoverScreen").style.display = "none";
     document.getElementById("canvas").style.display = "none";
+    document.getElementById("mainDiv").style.display = "none";
     this.world.hideUI();
     this.world.playAudio("audio/victory.wav");
     this.world.muted = true;

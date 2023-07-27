@@ -273,8 +273,9 @@ class World {
 
   gameOverScreen() {
     if (!this.gameOver) {
-      document.getElementById("gameoverScreen").style.display = "block";
+      document.getElementById("gameoverScreen").style.display = "flex";
       document.getElementById("canvas").style.display = "none";
+      this.gameOver = true
       this.hideUI();
     }
   }
@@ -283,11 +284,11 @@ class World {
     document.getElementById("muteButton").style.visibility = "hidden";
     document.getElementById("hitboxButton").style.visibility = "hidden";
     document.getElementById("title").style.visibility = "hidden";
-    document.getElementById("mainDiv").style.border = "none";
+    document.getElementById("mainDiv").style.display = "none";
   }
 
   handleEnemyHitType(enemy) {
-    if (enemy instanceof JellyFish) {
+    if (enemy instanceof JellyFish || enemy instanceof SuperJellyFish) {
       this.character.hitType = "shocked";
     } else {
       this.character.hitType = "poisoned";

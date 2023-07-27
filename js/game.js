@@ -10,7 +10,7 @@ function init() {
   mobileBtnEvents();
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard, muted);
-  gameStarted = true
+  gameStarted = true;
   handleWindowResize();
 }
 
@@ -53,6 +53,7 @@ function toggleFrames() {
 }
 
 function handleWindowResize() {
+  
   if (window.innerWidth < 750 && window.innerHeight > 390) {
     showRotateNotification();
   } else {
@@ -81,7 +82,9 @@ function showRotateNotification() {
 }
 
 function showGame() {
-  document.getElementById("mainDiv").style.display = "block";
+  if (gameStarted) {
+    document.getElementById("mainDiv").style.display = "block";
+  }
   if (window.innerHeight > 480) {
     document.getElementById("title").style.display = "block";
   } else {

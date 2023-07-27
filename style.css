@@ -4,14 +4,14 @@
 }
 
 body {
-    font-family: 'Luckiest Guy';
+    font-family: "Luckiest Guy";
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     height: 100vh;
-    background-image: url('img/background.jpg');
+    background-image: url("img/background.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -37,10 +37,9 @@ canvas {
     border-radius: 15px;
 }
 
-
 #startScreen {
     position: absolute;
-    background-image: url('img/3. Background/Mesa de trabajo 1.png');
+    background-image: url("img/3. Background/Mesa de trabajo 1.png");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -53,7 +52,7 @@ canvas {
 
 #howToPlayScreen {
     position: absolute;
-    background-image: url('img/3. Background/Mesa de trabajo 1.png');
+    background-image: url("img/3. Background/Mesa de trabajo 1.png");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -71,7 +70,7 @@ canvas {
 
 .instruction {
     background-color: rgba(0, 0, 0, 0.5);
-    color: #7FFFE0;
+    color: #7fffe0;
     padding: 0 10px;
     margin: 10px;
     border-radius: 10px;
@@ -80,7 +79,6 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .navKey {
@@ -116,46 +114,61 @@ canvas {
     padding: 0 4px;
 }
 
-
 #endScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 720px;
+    height: 480px;
+    z-index: 2;
+    display: none;
+}
 
-    background-image: url('img/6.Botones/Tittles/You win/Recurso 21.png');
+#youwinTitle {
+    background-image: url("img/6.Botones/Tittles/You win/Recurso 21.png");
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
     width: 720px;
-    height: 480px;
-    z-index: 2;
-
-    display: none;
+    height: 130px;
+    padding: 20px;
+    margin-top: 20px;
 }
 
 #gameoverScreen {
-    background-image: url('img/6.Botones/Tittles/Game Over/Recurso 12.png');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 720px;
+    height: 480px;
+    z-index: 2;
+    display: none;
+}
+
+#gameoverTitle {
+    background-image: url("img/6.Botones/Tittles/Game Over/Recurso 12.png");
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
     width: 720px;
-    height: 480px;
-    z-index: 2;
-
-    display: none;
+    height: 130px;
+    padding: 20px;
+    margin-top: 20px;
 }
 
 .playAgainBtn {
-    position: absolute;
     width: 190px;
     height: 63px;
-    right: 240px;
-    top: 340px;
+
     cursor: pointer;
     border-radius: 10px;
     font-size: 25px;
     font-family: Luckiest Guy;
-    background-color: #7FFFE0;
+    background-color: #7fffe0;
     border: white 4px solid;
 }
-
 
 #startButton {
     position: absolute;
@@ -164,7 +177,7 @@ canvas {
     right: 140px;
     top: 130px;
     cursor: pointer;
-    background-image: url('img/6.Botones/Start/2.png');
+    background-image: url("img/6.Botones/Start/2.png");
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -180,8 +193,8 @@ canvas {
     border-radius: 20px;
     font-size: 28px;
     font-family: Luckiest Guy;
-    background-color: #7FFFE0;
-    color: #531A82;
+    background-color: #7fffe0;
+    color: #531a82;
     border: white 3px solid;
     display: flex;
     justify-content: center;
@@ -196,8 +209,8 @@ canvas {
     border-radius: 20px;
     font-size: 28px;
     font-family: Luckiest Guy;
-    background-color: #7FFFE0;
-    color: #531A82;
+    background-color: #7fffe0;
+    color: #531a82;
     border: white 3px solid;
     display: flex;
     justify-content: center;
@@ -205,7 +218,7 @@ canvas {
 }
 
 #startbutton:hover {
-    background-image: url('img/6.Botones/Start/1.png');
+    background-image: url("img/6.Botones/Start/1.png");
 }
 
 .button {
@@ -227,45 +240,43 @@ canvas {
     position: absolute;
     left: 30px;
     bottom: 60px;
-    background-image: url('img/arrow-left.png');
+    background-image: url("img/arrow-left.png");
 }
 
 #btnRight {
     position: absolute;
     left: 128px;
     bottom: 60px;
-    background-image: url('img/arrow-right.png');
+    background-image: url("img/arrow-right.png");
 }
 
 #btnUp {
     position: absolute;
     left: 80px;
     bottom: 110px;
-    background-image: url('img/arrow-up.png');
+    background-image: url("img/arrow-up.png");
 }
 
 #btnDown {
     position: absolute;
     left: 80px;
     bottom: 10px;
-    background-image: url('img/arrow-down.png');
+    background-image: url("img/arrow-down.png");
 }
 
 #bubbleBtn {
     position: absolute;
     right: 50px;
     bottom: 80px;
-    background-image: url('img/bubble.png');
+    background-image: url("img/bubble.png");
 }
 
 #attackBtn {
     position: absolute;
     right: 100px;
     bottom: 30px;
-    background-image: url('img/attack.png');
+    background-image: url("img/attack.png");
 }
-
-
 
 #hitboxButton {
     position: absolute;
@@ -274,7 +285,7 @@ canvas {
     right: 60px;
     top: 10px;
     cursor: pointer;
-    background-image: url('img/square.png');
+    background-image: url("img/square.png");
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -288,15 +299,12 @@ canvas {
     right: 10px;
     top: 10px;
     cursor: pointer;
-    background-image: url('img/unmute.png');
+    background-image: url("img/unmute.png");
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
     display: block;
 }
-
-
-
 
 #howToPlayButton {
     position: absolute;
@@ -305,7 +313,7 @@ canvas {
     right: 140px;
     top: 130px;
     cursor: pointer;
-    background-image: url('img/6.Botones/Start/2.png');
+    background-image: url("img/6.Botones/Start/2.png");
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -313,7 +321,7 @@ canvas {
 
 #rotateNotification {
     font-size: 40px;
-    color: #7FFFE0;
+    color: #7fffe0;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
     text-align: center;
     width: 720px;
@@ -323,9 +331,6 @@ canvas {
     justify-content: center;
     word-wrap: break-word;
 }
-
-
-
 
 @media only screen and (max-width: 750px) {
     canvas {
@@ -348,7 +353,6 @@ canvas {
     #rotateNotification {
         width: 100%;
     }
-
 }
 
 @media only screen and (max-height: 480px) {
@@ -376,13 +380,19 @@ canvas {
     #gameoverScreen {
         width: 100%;
         background-size: contain;
-        margin-bottom: 200px;
     }
 
+    #gameoverTitle {
+        width: 80%;
+    }
+
+    #youwinTitle {
+        width: 80%;
+    }
+    
     #endScreen {
         width: 100%;
         background-size: contain;
-        margin-bottom: 200px;
     }
 
     .instruction {
