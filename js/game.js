@@ -15,6 +15,14 @@ function resetGame() {
   location.reload();
 }
 
+function openHowToPlay(){
+  document.getElementById('howToPlayScreen').style.display = 'flex'
+}
+
+function closeHowToPlay(){
+  document.getElementById('howToPlayScreen').style.display = 'none'
+}
+
 function mute() {
   let muteButton = document.getElementById("muteButton");
 
