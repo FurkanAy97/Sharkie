@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 let paused = false;
 let muted = false;
 let gameStarted = false;
+let gameOver = false;
 
 function init() {
   initLevel();
@@ -53,7 +54,6 @@ function toggleFrames() {
 }
 
 function handleWindowResize() {
-  
   if (window.innerWidth < 750 && window.innerHeight > 390) {
     showRotateNotification();
   } else {
@@ -82,7 +82,7 @@ function showRotateNotification() {
 }
 
 function showGame() {
-  if (gameStarted) {
+  if (!gameOver) {
     document.getElementById("mainDiv").style.display = "block";
   }
   if (window.innerHeight > 480) {

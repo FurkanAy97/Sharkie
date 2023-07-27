@@ -248,12 +248,22 @@ class World {
 
   checkCharacterCollision(enemy) {
     if (this.character.isColliding(enemy) || this.character.isColliding(this.endboss)) {
-      if (enemy instanceof PufferFish && this.character.attacking) {
-        this.handlePufferfishDamage(enemy);
+      if (this.character.isColliding(this.endboss)) {
+        this.handleEnemyHitType(this.endboss);
+        this.character.hit();
       } else {
         this.handleEnemyHitType(enemy);
-        this.character.hit();
+        if (
+          enemy instanceof PufferFish &&
+          this.character.attacking &&
+          !this.character.isColliding(this.endboss)
+        ) {
+          this.handlePufferfishDamage(enemy);
+        } else {
+          this.character.hit();
+        }
       }
+
       this.updateLifeBar();
       this.checkIfCharDead(enemy);
     }
@@ -266,7 +276,7 @@ class World {
       this.playAudio("audio/game-over.wav");
       this.muted = true;
       this.gameOverScreen();
-      gameStarted = false;
+      gameOver = true;
       handleWindowResize();
     }
   }
@@ -275,7 +285,7 @@ class World {
     if (!this.gameOver) {
       document.getElementById("gameoverScreen").style.display = "flex";
       document.getElementById("canvas").style.display = "none";
-      this.gameOver = true
+      this.gameOver = true;
       this.hideUI();
     }
   }
