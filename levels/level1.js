@@ -3,6 +3,7 @@ function initLevel() {
   document.getElementById('startScreen').style.visibility = 'hidden';
   document.getElementById('muteButton').style.visibility = 'visible';
   document.getElementById('hitboxButton').style.visibility = 'visible';
+  document.getElementById('fullscreenBtn').style.visibility = 'visible';
 
   level1 = new Level(
     [

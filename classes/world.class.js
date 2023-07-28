@@ -13,12 +13,14 @@ class World {
   audioTimeout = false;
   muted;
   framesActive;
+  fullscreenOn = false
 
-  constructor(canvas, keyboard, muted) {
+  constructor(canvas, keyboard, muted, fullscreenOn) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.muted = muted;
+    this.fullscreenOn = fullscreenOn;
     this.draw();
     this.setWorld();
     this.checkCollisions();
@@ -281,6 +283,7 @@ class World {
 
   gameOverScreen() {
     if (gameIsRunning) {
+      exitFullscreen();
       document.getElementById("gameoverScreen").style.display = "flex";
       document.getElementById("canvas").style.display = "none";
       gameIsRunning = false

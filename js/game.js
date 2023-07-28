@@ -6,6 +6,7 @@ let muted = false;
 let gameIsRunning = false;
 let gameOver = false;
 let youWin = false;
+let fullscreenOn = false;
 
 function init() {
   initLevel();
@@ -28,9 +29,60 @@ function closeHowToPlay() {
   document.getElementById("howToPlayScreen").style.display = "none";
 }
 
+function toggleFullscreen() {
+  const container = document.getElementById("mainDiv");
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+  const startScreen = document.getElementById("startScreen");
+  const optionBtnLayer = document.querySelector(".optionBtnLayer");
+
+  if (!fullscreenOn) {
+    enableFullscreen(container, fullscreenBtn, startScreen, optionBtnLayer);
+  } else {
+    disableFullscreen(container, fullscreenBtn, optionBtnLayer);
+  }
+}
+
+function enableFullscreen(container, fullscreenBtn, startScreen, optionBtnLayer) {
+  fullscreenBtn.style.backgroundImage = "url('img/fullscreen-exit.png')";
+  fullscreenOn = true;
+  enterFullscreen(container);
+  startScreen.classList.add("fullscreen");
+  container.style.border = "none";
+  if (window.innerHeight > 480) {
+    optionBtnLayer.style.width = "100%";
+  }
+}
+
+function disableFullscreen(container, fullscreenBtn, optionBtnLayer) {
+  fullscreenBtn.style.backgroundImage = "url('img/fullscreen-enter.png')";
+  fullscreenOn = false;
+  exitFullscreen();
+  container.style.border = "15px solid black";
+  if (window.innerHeight > 480) {
+    optionBtnLayer.style.width = "720px";
+  }
+}
+
+function enterFullscreen(element) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  }
+}
+
+function exitFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+}
+
 function mute() {
   let muteButton = document.getElementById("muteButton");
-
   if (!muted) {
     muteButton.style.backgroundImage = "url(img/mute.png)";
     muted = true;
@@ -55,11 +107,20 @@ function toggleFrames() {
 }
 
 function handleWindowResize() {
+  if (window.innerHeight < 481) {
+    document.querySelector(".optionBtnLayer").style.width = "auto";
+  } else if (!fullscreenOn) {
+    document.querySelector(".optionBtnLayer").style.width = "720px";
+  } else {
+    document.querySelector(".optionBtnLayer").style.width = "100%";
+  }
+  
   if (window.innerWidth < 750 && window.innerHeight > 390) {
     showRotateNotification();
   } else {
     showGame();
   }
+
 
   if (window.innerHeight < 480 && gameIsRunning == true) {
     buttons = document.querySelectorAll(".button");
@@ -85,7 +146,7 @@ function showRotateNotification() {
 }
 
 function showGame() {
-  if (gameIsRunning) {
+  if (!gameOver && !youWin) {
     document.getElementById("mainDiv").style.display = "block";
   }
   if (gameOver) {

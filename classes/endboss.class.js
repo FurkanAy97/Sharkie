@@ -174,6 +174,7 @@ class Endboss extends Enemy {
     this.world.muted = true;
     youWin = true;
     gameIsRunning = false
+    exitFullscreen()
     handleWindowResize();
   }
 
