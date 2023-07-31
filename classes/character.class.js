@@ -127,44 +127,64 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts the animation loops for the character's movement and actions.
+   */
   animate() {
     setInterval(() => {
-      if (!this.world.blockSwimming) {
-        this.navigateCharacter();
-      }
-      this.checkIfSwimming();
-      if (this.world.keyboard.SPACE && !this.cooldown) {
-        this.shoot();
-        this.isShooting();
-      }
-      if (this.world.keyboard.D && !this.tailCooldown) {
-        this.tailAttack();
-        this.isTailAttacking();
-      }
-      this.world.camera_x = -this.x + 140;
+      this.handleAnimationConditions();
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.attacking) {
-        this.playTailAttackAnimation(this.IMAGES_TAILATTACK);
-      } else if (this.shooting) {
-        this.playShootingAnimation(this.IMAGES_SHOOTING);
-      } else if (this.lastHitType == "poisoned") {
-        this.playAnimation(this.IMAGES_POISONED_DEATH);
-      } else if (this.lastHitType == "shocked") {
-        this.playAnimation(this.IMAGES_SHOCKED_DEATH);
-      } else if (this.isHurt() && this.hitType == "shocked") {
-        this.playAnimation(this.IMAGES_SHOCKED);
-      } else if (this.isHurt() && this.hitType == "poisoned") {
-        this.playAnimation(this.IMAGES_POISONED);
-      } else if (this.isSwimming) {
-        this.playAnimation(this.IMAGES_SWIMMING);
-      } else {
-        this.playAnimation(this.IMAGES_IDLE);
-      }
+      this.playCorrectAnimation();
     }, 1000 / 8);
   }
 
+  /**
+   * Handles various animation conditions based on user input and game states.
+   */
+  handleAnimationConditions() {
+    if (!this.world.blockSwimming) {
+      this.navigateCharacter();
+    }
+    this.checkIfSwimming();
+    if (this.world.keyboard.SPACE && !this.cooldown) {
+      this.shoot();
+      this.isShooting();
+    }
+    if (this.world.keyboard.D && !this.tailCooldown) {
+      this.tailAttack();
+      this.isTailAttacking();
+    }
+    this.world.camera_x = -this.x + 140;
+  }
+
+  /**
+   * Plays the correct animation based on the character's current state.
+   */
+  playCorrectAnimation() {
+    if (this.attacking) {
+      this.playTailAttackAnimation(this.IMAGES_TAILATTACK);
+    } else if (this.shooting) {
+      this.playShootingAnimation(this.IMAGES_SHOOTING);
+    } else if (this.lastHitType == "poisoned") {
+      this.playAnimation(this.IMAGES_POISONED_DEATH);
+    } else if (this.lastHitType == "shocked") {
+      this.playAnimation(this.IMAGES_SHOCKED_DEATH);
+    } else if (this.isHurt() && this.hitType == "shocked") {
+      this.playAnimation(this.IMAGES_SHOCKED);
+    } else if (this.isHurt() && this.hitType == "poisoned") {
+      this.playAnimation(this.IMAGES_POISONED);
+    } else if (this.isSwimming) {
+      this.playAnimation(this.IMAGES_SWIMMING);
+    } else {
+      this.playAnimation(this.IMAGES_IDLE);
+    }
+  }
+
+  /**
+   * Checks if the character is currently tail attacking.
+   */
   isTailAttacking() {
     this.attacking = true;
     setTimeout(() => {
@@ -173,16 +193,14 @@ class Character extends MovableObject {
     }, 1000);
   }
 
+  /**
+   * Initiates the character's shooting action.
+   * Adds a throwable object to the world and plays a shooting sound.
+   */
   shoot() {
     setTimeout(() => {
       this.world.throwableObjects.push(
-        new ThrowableObject(
-          this.x,
-          this.y + this.height / 2,
-          this.world,
-          this.offset,
-          this.otherDirection
-        )
+        new ThrowableObject(this.x,this.y + this.height / 2,this.world,this.offset,this.otherDirection)
       );
       this.world.playAudio("audio/bubble.mp3");
     }, 800);
@@ -192,6 +210,10 @@ class Character extends MovableObject {
     }, 1000);
   }
 
+  /**
+   * Initiates the character's tail attack action.
+   * Sets a cooldown before the character can tail attack again.
+   */
   tailAttack() {
     this.tailCooldown = true;
     setTimeout(() => {
@@ -199,6 +221,9 @@ class Character extends MovableObject {
     }, 1000);
   }
 
+  /**
+   * Checks if the character is currently shooting.
+   */
   isShooting() {
     this.shooting = true;
     setTimeout(() => {

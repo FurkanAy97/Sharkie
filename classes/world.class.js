@@ -30,16 +30,18 @@ class World {
   }
 
   playWorldAudio() {
-    if (!this.muted) {
-      let audio = new Audio("audio/level-music.mp3");
-      audio.loop = true;
-      audio.play();
-      setInterval(() => {
-        if (this.endboss.bossSpawned || this.muted) {
-          audio.pause(audio);
-        }
-      }, 1000 / 8);
-    }
+    setTimeout(() => {
+      if (!this.muted) {
+        let audio = new Audio("audio/level-music.mp3");
+        audio.loop = true;
+        audio.play();
+        setInterval(() => {
+          if (this.endboss.bossSpawned || this.muted) {
+            audio.pause(audio);
+          }
+        }, 1000 / 8);
+      }
+    }, 100);
   }
 
   playEndbossAudio() {

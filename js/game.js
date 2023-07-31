@@ -17,6 +17,16 @@ function init() {
   handleWindowResize();
 }
 
+async function setMuteState() {
+  let muteButton = document.getElementById("muteButton");
+  muted = await JSON.parse(localStorage.getItem("muted"));
+  if (!muted) {
+    muteButton.style.backgroundImage = "url('img/unmute.png')";
+  } else {
+    muteButton.style.backgroundImage = "url('img/mute.png')";
+  }
+}
+
 function resetGame() {
   location.reload();
 }
@@ -81,17 +91,19 @@ function exitFullscreen() {
   }
 }
 
-function mute() {
+async function mute() {
   let muteButton = document.getElementById("muteButton");
   if (!muted) {
     muteButton.style.backgroundImage = "url(img/mute.png)";
     muted = true;
+    localStorage.setItem("muted", JSON.stringify(muted));
     if (world) {
       world.muted = true;
     }
   } else {
     muteButton.style.backgroundImage = "url('img/unmute.png')";
     muted = false;
+    localStorage.setItem("muted", JSON.stringify(muted));
     if (world) {
       world.muted = false;
     }
@@ -114,13 +126,12 @@ function handleWindowResize() {
   } else {
     document.querySelector(".optionBtnLayer").style.width = "100%";
   }
-  
+
   if (window.innerWidth < 750 && window.innerHeight > 390) {
     showRotateNotification();
   } else {
     showGame();
   }
-
 
   if (window.innerHeight < 480 && gameIsRunning == true) {
     buttons = document.querySelectorAll(".button");

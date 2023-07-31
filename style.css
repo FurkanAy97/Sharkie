@@ -320,7 +320,7 @@ canvas {
     right: 10px;
     top: 10px;
     cursor: pointer;
-    background-image: url("img/unmute.png");
+    
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;

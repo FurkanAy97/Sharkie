@@ -7,6 +7,5 @@ class Collectable extends MovableObject {
   counter;
   constructor() {
     super();
-    
   }
 }
