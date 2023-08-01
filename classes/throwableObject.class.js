@@ -29,6 +29,13 @@ class ThrowableObject extends MovableObject {
     this.throw();
   }
 
+  /**
+   * Checks if poison bubble can be used for the attack.
+   * Depletes poison meter after 1000ms delay if possible.
+   * Returns path to poisoned bubble image or regular bubble image.
+   *
+   * @returns {string} - The path to the bubble image.
+   */
   checkIfPoisonBubble() {
     if (this.world.statusBars[2].percentage > 0) {
       setTimeout(() => {
@@ -40,6 +47,11 @@ class ThrowableObject extends MovableObject {
     }
   }
 
+  /**
+   * Depletes the poison meter by reducing the percentage.
+   * Updates poison meter after depletion if percentage is > 0.
+   *
+   */
   depletePoisonMeter() {
     if (this.world.statusBars[2].percentage > 0) {
       this.world.statusBars[2].percentage -= 20;
@@ -47,6 +59,12 @@ class ThrowableObject extends MovableObject {
     }
   }
 
+  /**
+   * Initiates the throwing action for the enemy object.
+   * Creates throwing animation using setInterval.
+   * Lasts for 1000ms before removing enemy from throwableObjects array.
+   *
+   */
   throw() {
     this.throwInterval = setInterval(() => {
       if (this.otherDirection) {

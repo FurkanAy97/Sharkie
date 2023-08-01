@@ -13,6 +13,7 @@ class Endboss extends Enemy {
   moveDown = false;
   moveLeft = false;
   enemyType = "endBoss";
+  imgIndex = 0;
   bossSpawned = false;
   firstBossSpawn = false;
   attackCooldown = false;
@@ -88,29 +89,54 @@ class Endboss extends Enemy {
     }, 500);
   }
 
+  /**
+   * Animates the boss character by repeatedly calling `pickAnimation()` and updating image indexes.
+   * If the character's position is beyond 1500 units on the x-axis and the first boss spawn has not occurred,
+   * it calls the `spawnBoss()` function to initialize the boss.
+   */
   animateBoss() {
-    let i;
     setInterval(() => {
-      if (!this.bossSpawned) {
-      } else if (this.isAttacking) {
-        this.playAnimation(this.IMAGES_ATTACK);
-      } else if (i < 10 && !this.isDead && !this.isHurt && !this.isAttacking) {
-        this.playAnimation(this.IMAGES_INTRO);
-      } else if (!this.isDead && !this.isHurt && !this.isAttacking) {
-        this.playAnimation(this.IMAGES_FLOATING);
-      }
-      i++;
-
+      this.pickAnimation();
+      this.imgIndex++;
       if (this.world.character.x > 1500 && !this.firstBossSpawn) {
-        this.currentImage = 0;
-        i = 0;
-        this.firstBossSpawn = true;
-        this.bossSpawned = true;
-        this.world.playEndbossAudio();
+        this.spawnBoss();
       }
     }, 1000 / 8);
   }
 
+  /**
+   * Picks the appropriate animation for the boss character based on its current state.
+   * It plays different animations (`IMAGES_INTRO`, `IMAGES_FLOATING`, or `IMAGES_ATTACK`)
+   * depending on whether the boss has spawned, is attacking, or floating normally.
+   */
+  pickAnimation() {
+    if (!this.bossSpawned) {
+    } else if (this.isAttacking) {
+      this.playAnimation(this.IMAGES_ATTACK);
+    } else if (this.imgIndex < 10 && !this.isDead && !this.isHurt && !this.isAttacking) {
+      this.playAnimation(this.IMAGES_INTRO);
+    } else if (!this.isDead && !this.isHurt && !this.isAttacking) {
+      this.playAnimation(this.IMAGES_FLOATING);
+    }
+  }
+
+  /**
+   * Initializes the boss character when it is first spawned.
+   * It resets the image index and other necessary properties and plays endboss audio.
+   */
+  spawnBoss() {
+    this.currentImage = 0;
+    this.imgIndex = 0;
+    this.firstBossSpawn = true;
+    this.bossSpawned = true;
+    this.world.playEndbossAudio();
+  }
+
+  /**
+   * Handles the movement of the boss character by periodically updating its position.
+   * The movement is controlled by the `checkIfUpOrDown()` and `changeDirection()` functions.
+   * It runs at a frequency of 60 frames per second (FPS).
+   */
   handleEndbossMovement() {
     setInterval(() => {
       if (this.bossSpawned) {
@@ -120,6 +146,10 @@ class Endboss extends Enemy {
     }, 1000 / 60);
   }
 
+  /**
+   * Updates the vertical and horizontal position of the boss character based on its movement direction.
+   * The character moves up and down and left and right based on the boolean flags `moveDown`, `moveLeft`, etc.
+   */
   checkIfUpOrDown() {
     if (this.moveDown) {
       this.y += 2;
@@ -133,6 +163,11 @@ class Endboss extends Enemy {
     }
   }
 
+  /**
+   * Updates the movement direction of the boss character when it reaches certain boundaries.
+   * If the boss is close to the top or bottom boundary, it changes the vertical movement direction.
+   * If the boss is close to the left or right boundary, it changes the horizontal movement direction.
+   */
   changeDirection() {
     if (this.y <= -200) {
       this.moveDown = !this.moveDown;
@@ -150,6 +185,10 @@ class Endboss extends Enemy {
     }
   }
 
+  /**
+   * Plays the death animation of the boss character by repeatedly updating its image with each frame.
+   * After playing the animation, it triggers the `youwinScreen()` function and sets the `youWin` flag to true.
+   */
   deathAnimation() {
     let i = 0;
     const intervalId = setInterval(() => {
@@ -164,6 +203,12 @@ class Endboss extends Enemy {
     }, 1000 / 10);
   }
 
+  /**
+   * Displays the "You Win" screen and performs various UI-related tasks when the boss is defeated.
+   * It hides the game canvas, mainDiv, and game over screen while displaying the end screen.
+   * Additionally, it plays the victory audio, mutes the world audio, and sets `youWin` and `gameIsRunning` flags.
+   * Finally, it exits full screen and handles window resize.
+   */
   youwinScreen() {
     document.getElementById("endScreen").style.display = "flex";
     document.getElementById("gameoverScreen").style.display = "none";
@@ -173,11 +218,16 @@ class Endboss extends Enemy {
     this.world.playAudio("audio/victory.wav");
     this.world.muted = true;
     youWin = true;
-    gameIsRunning = false
-    exitFullscreen()
+    gameIsRunning = false;
+    exitFullscreen();
     handleWindowResize();
   }
 
+  /**
+   * Plays the hurt animation of the boss character by repeatedly updating its image with each frame
+   * for a certain number of iterations when the boss is hurt (`isHurt` flag is true).
+   * After playing the animation, it sets the `isHurt` flag to false.
+   */
   hurtAnimation() {
     let i = 0;
     const intervalId = setInterval(() => {
@@ -191,6 +241,11 @@ class Endboss extends Enemy {
     }, 1000 / 10);
   }
 
+  /**
+   * Inflicts damage to the boss character by reducing its health.
+   * If the health reaches zero, it triggers the `deathAnimation()` function.
+   * Otherwise, it sets the `isHurt` flag to true and plays the hurt animation.
+   */
   damage() {
     this.health -= 1;
     if (this.health == 0) {

@@ -8,6 +8,9 @@ let gameOver = false;
 let youWin = false;
 let fullscreenOn = false;
 
+/**
+ * Initializes the game by setting up the level, button events, and creating the world.
+ */
 function init() {
   initLevel();
   mobileBtnEvents();
@@ -17,28 +20,30 @@ function init() {
   handleWindowResize();
 }
 
-async function setMuteState() {
-  let muteButton = document.getElementById("muteButton");
-  muted = await JSON.parse(localStorage.getItem("muted"));
-  if (!muted) {
-    muteButton.style.backgroundImage = "url('img/unmute.png')";
-  } else {
-    muteButton.style.backgroundImage = "url('img/mute.png')";
-  }
-}
-
+/**
+ * Resets the game by reloading the current page.
+ */
 function resetGame() {
   location.reload();
 }
 
+/**
+ * Opens the "How to Play" screen.
+ */
 function openHowToPlay() {
   document.getElementById("howToPlayScreen").style.display = "flex";
 }
 
+/**
+ * Closes the "How to Play" screen.
+ */
 function closeHowToPlay() {
   document.getElementById("howToPlayScreen").style.display = "none";
 }
 
+/**
+ * Toggles fullscreen mode for the game.
+ */
 function toggleFullscreen() {
   const container = document.getElementById("mainDiv");
   const fullscreenBtn = document.getElementById("fullscreenBtn");
@@ -52,6 +57,14 @@ function toggleFullscreen() {
   }
 }
 
+/**
+ * Enables fullscreen mode for the game.
+ *
+ * @param {HTMLElement} container - The container element of the game.
+ * @param {HTMLElement} fullscreenBtn - The button element to toggle fullscreen.
+ * @param {HTMLElement} startScreen - The start screen element of the game.
+ * @param {HTMLElement} optionBtnLayer - The layer containing option buttons.
+ */
 function enableFullscreen(container, fullscreenBtn, startScreen, optionBtnLayer) {
   fullscreenBtn.style.backgroundImage = "url('img/fullscreen-exit.png')";
   fullscreenOn = true;
@@ -63,6 +76,13 @@ function enableFullscreen(container, fullscreenBtn, startScreen, optionBtnLayer)
   }
 }
 
+/**
+ * Disables fullscreen mode for the game.
+ *
+ * @param {HTMLElement} container - The container element of the game.
+ * @param {HTMLElement} fullscreenBtn - The button element to toggle fullscreen.
+ * @param {HTMLElement} optionBtnLayer - The layer containing option buttons.
+ */
 function disableFullscreen(container, fullscreenBtn, optionBtnLayer) {
   fullscreenBtn.style.backgroundImage = "url('img/fullscreen-enter.png')";
   fullscreenOn = false;
@@ -73,6 +93,11 @@ function disableFullscreen(container, fullscreenBtn, optionBtnLayer) {
   }
 }
 
+/**
+ * Enters fullscreen mode for a specific element.
+ *
+ * @param {HTMLElement} element - The element to enter fullscreen mode.
+ */
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
@@ -83,30 +108,28 @@ function enterFullscreen(element) {
   }
 }
 
+/**
+ * Exits fullscreen mode.
+ */
 function exitFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
+  if (document.fullscreenElement) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
   }
 }
 
-async function mute() {
+/**
+ * Toggles the mute status of the game.
+ */
+function mute() {
   let muteButton = document.getElementById("muteButton");
   if (!muted) {
-    muteButton.style.backgroundImage = "url(img/mute.png)";
-    muted = true;
-    localStorage.setItem("muted", JSON.stringify(muted));
-    if (world) {
-      world.muted = true;
-    }
+    activateMute(muteButton);
   } else {
-    muteButton.style.backgroundImage = "url('img/unmute.png')";
-    muted = false;
-    localStorage.setItem("muted", JSON.stringify(muted));
-    if (world) {
-      world.muted = false;
-    }
+    deactivateMute(muteButton);
   }
   if (world) {
     world.playWorldAudio();
@@ -114,18 +137,58 @@ async function mute() {
   }
 }
 
+/**
+ * Activates the mute state in the game and updates the mute button appearance.
+ *
+ * @param {HTMLElement} muteButton - The mute button element to activate.
+ */
+function activateMute(muteButton) {
+  muteButton.style.backgroundImage = "url(img/mute.png)";
+  muted = true;
+  localStorage.setItem("muted", JSON.stringify(muted));
+  if (world) {
+    world.muted = true;
+  }
+}
+
+/**
+ * Deactivates the mute state in the game and updates the mute button appearance.
+ */
+function deactivateMute() {
+  muteButton.style.backgroundImage = "url('img/unmute.png')";
+  muted = false;
+  localStorage.setItem("muted", JSON.stringify(muted));
+  if (world) {
+    world.muted = false;
+  }
+}
+
+/**
+ * Sets the mute state of the game based on the stored value in localStorage.
+ * Updates the mute button appearance accordingly.
+ */
+async function setMuteState() {
+  let muteButton = document.getElementById("muteButton");
+  muted = await JSON.parse(localStorage.getItem("muted"));
+  if (!muted) {
+    muteButton.style.backgroundImage = "url('img/unmute.png')";
+  } else {
+    muteButton.style.backgroundImage = "url('img/mute.png')";
+  }
+}
+
+/**
+ * Toggles the state of frame rendering in the game world.
+ */
 function toggleFrames() {
   world.framesActive = !world.framesActive;
 }
 
+/**
+ * Handles window resize events and adjusts game elements accordingly.
+ */
 function handleWindowResize() {
-  if (window.innerHeight < 481) {
-    document.querySelector(".optionBtnLayer").style.width = "auto";
-  } else if (!fullscreenOn) {
-    document.querySelector(".optionBtnLayer").style.width = "720px";
-  } else {
-    document.querySelector(".optionBtnLayer").style.width = "100%";
-  }
+  handleOptionBtnLayerSize();
 
   if (window.innerWidth < 750 && window.innerHeight > 390) {
     showRotateNotification();
@@ -133,6 +196,26 @@ function handleWindowResize() {
     showGame();
   }
 
+  handleMobileButtons();
+}
+
+/**
+ * Adjusts the size of the optionBtnLayer based on the window and fullscreen state.
+ */
+function handleOptionBtnLayerSize() {
+  if (window.innerHeight < 481) {
+    document.querySelector(".optionBtnLayer").style.width = "auto";
+  } else if (!fullscreenOn) {
+    document.querySelector(".optionBtnLayer").style.width = "720px";
+  } else {
+    document.querySelector(".optionBtnLayer").style.width = "100%";
+  }
+}
+
+/**
+ * Handles the display of mobile buttons based on the window height and game state.
+ */
+function handleMobileButtons() {
   if (window.innerHeight < 480 && gameIsRunning == true) {
     buttons = document.querySelectorAll(".button");
     buttons.forEach((btn) => {
@@ -146,8 +229,12 @@ function handleWindowResize() {
   }
 }
 
+// Event listener for window resize event to handle resizing the game elements.
 window.addEventListener("resize", handleWindowResize);
 
+/**
+ * Shows a notification to rotate the screen.
+ */
 function showRotateNotification() {
   document.getElementById("mainDiv").style.display = "none";
   document.getElementById("title").style.display = "none";
@@ -156,6 +243,9 @@ function showRotateNotification() {
   document.getElementById("rotateNotification").style.display = "flex";
 }
 
+/**
+ * Shows the main game content and screens based on the game state.
+ */
 function showGame() {
   if (!gameOver && !youWin) {
     document.getElementById("mainDiv").style.display = "block";
@@ -176,6 +266,12 @@ function showGame() {
 
 const keyState = {};
 
+/**
+ * Stores the state of each key in the keyState object when a key is pressed (keydown event).
+ * Updates the keyboard.UP, keyboard.RIGHT, keyboard.DOWN, keyboard.LEFT, keyboard.SPACE, and keyboard.D properties accordingly.
+ *
+ * @param {KeyboardEvent} event - The keydown event object.
+ */
 window.addEventListener("keydown", (event) => {
   const key = event.key;
   keyState[key] = true;
@@ -200,6 +296,12 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+/**
+ * Updates the keyState object when a key is released (keyup event).
+ * Resets the keyboard.UP, keyboard.RIGHT, keyboard.DOWN, keyboard.LEFT, keyboard.SPACE, and keyboard.D properties accordingly.
+ *
+ * @param {KeyboardEvent} event - The keyup event object.
+ */
 window.addEventListener("keyup", (event) => {
   const key = event.key;
 
@@ -225,6 +327,10 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
+/**
+ * Adds touchstart and touchend event listeners to the mobile buttons for character control.
+ * Updates the keyboard.UP, keyboard.RIGHT, keyboard.DOWN, keyboard.LEFT, keyboard.SPACE, and keyboard.D properties accordingly.
+ */
 function mobileBtnEvents() {
   document.getElementById("btnUp").addEventListener("touchstart", (e) => {
     e.preventDefault();

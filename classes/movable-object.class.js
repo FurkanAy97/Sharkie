@@ -6,7 +6,7 @@ class MovableObject extends DrawableObject {
   otherDirection = false;
   energy = 100;
   lastHitTime = 0;
-  hitCooldown = 1000; 
+  hitCooldown = 1000;
   lastHitType = "none";
   hitType = "none";
   lastShootTime = 0;
@@ -121,6 +121,12 @@ class MovableObject extends DrawableObject {
     this.currentShootingImage++;
   }
 
+  /**
+   * Plays the tail attack animation once by cycling through the given images.
+   *
+   * @function
+   * @param {string[]} images - An array of image paths representing the tail attack animation frames.
+   */
   playTailAttackAnimation(images) {
     let i = this.currentTailAttackImage % images.length;
     let path = images[i];
@@ -128,6 +134,12 @@ class MovableObject extends DrawableObject {
     this.currentTailAttackImage++;
   }
 
+  /**
+   * Plays the transition animation once by cycling through the given images.
+   *
+   * @function
+   * @param {string[]} images - An array of image paths representing the transition animation frames.
+   */
   playTransAnimation(images) {
     let i = this.currentTransImage % images.length;
     let path = images[i];
@@ -135,6 +147,12 @@ class MovableObject extends DrawableObject {
     this.currentTransImage++;
   }
 
+  /**
+   * Plays the death animation once by cycling through the given images.
+   *
+   * @function
+   * @param {string[]} images - An array of image paths representing the death animation frames.
+   */
   playDeathAnimation(images) {
     let i = this.currentDeathImage % images.length;
     let path = images[i];

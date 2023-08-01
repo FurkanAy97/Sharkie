@@ -11,6 +11,11 @@ class Enemy extends MovableObject {
     super();
   }
 
+  /**
+   * Animates the enemy based on its state and the provided images.
+   *
+   * @param {string[]} images - An array of image URLs to animate the enemy with.
+   */
   animate(images) {
     setInterval(() => {
       if (this.isDead) {

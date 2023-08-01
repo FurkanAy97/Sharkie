@@ -20,7 +20,6 @@ class SuperJellyFish extends Enemy {
 
   constructor(x, y) {
     super().loadImage("img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png");
-
     this.x = x;
     this.y = y;
     this.loadImages(this.IMAGES_SWIMMING);
