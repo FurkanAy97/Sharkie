@@ -197,15 +197,11 @@ class MovableObject extends DrawableObject {
    * Checks if the character is swimming based on keyboard input.
    */
   checkIfSwimming() {
-    if (
+    this.isSwimming = (
       this.world.keyboard.RIGHT ||
       this.world.keyboard.LEFT ||
       this.world.keyboard.UP ||
       this.world.keyboard.DOWN
-    ) {
-      this.isSwimming = true;
-    } else {
-      this.isSwimming = false;
-    }
+    )
   }
 }
