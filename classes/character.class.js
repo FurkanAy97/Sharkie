@@ -10,6 +10,7 @@ class Character extends MovableObject {
   shooting = false;
   attacking = false;
   isSwimming = false;
+  bubbleCooldown = false;
   offset = {
     top: 115,
     bottom: 170,
@@ -148,11 +149,11 @@ class Character extends MovableObject {
       this.navigateCharacter();
     }
     this.checkIfSwimming();
-    if (this.world.keyboard.SPACE && !this.cooldown) {
+    if (this.world.keyboard.SPACE && !this.bubbleCooldown && this.world.throwableObjects <= 1) {
       this.shoot();
       this.isShooting();
     }
-    if (this.world.keyboard.D && !this.tailCooldown) {
+    if (this.world.keyboard.D && !this.tailbubbleCooldown) {
       this.tailAttack();
       this.isTailAttacking();
     }
@@ -204,20 +205,20 @@ class Character extends MovableObject {
       );
       this.world.playAudio("audio/bubble.mp3");
     }, 800);
-    this.cooldown = true;
+    this.bubbleCooldown = true;
     setTimeout(() => {
-      this.cooldown = false;
+      this.bubbleCooldown = false;
     }, 1000);
   }
 
   /**
    * Initiates the character's tail attack action.
-   * Sets a cooldown before the character can tail attack again.
+   * Sets a bubbleCooldown before the character can tail attack again.
    */
   tailAttack() {
-    this.tailCooldown = true;
+    this.tailbubbleCooldown = true;
     setTimeout(() => {
-      this.tailCooldown = false;
+      this.tailbubbleCooldown = false;
     }, 1000);
   }
 

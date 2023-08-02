@@ -11,7 +11,6 @@ class MovableObject extends DrawableObject {
   hitType = "none";
   lastShootTime = 0;
   isDead = false;
-  cooldown = false;
   tailCooldown = false;
   blockedSwimDirections = {
     right: false,

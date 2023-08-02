@@ -1,6 +1,5 @@
 class World {
   character = new Character();
-
   level = level1;
   endboss = this.level.endboss.find((e) => e instanceof Endboss);
   canvas;
