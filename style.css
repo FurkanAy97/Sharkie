@@ -10,7 +10,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
     background-image: url("img/background.jpg");
     background-position: center;
     background-size: cover;
@@ -28,7 +28,7 @@ canvas {
     background-color: black;
     display: block;
     width: 100%;
-    max-height: 100vh;
+    max-height: 100dvh;
 }
 
 .optionBtnLayer {
@@ -85,7 +85,7 @@ canvas {
 
 .fullscreen{
     width: 100% !important;
-    max-height: 100vh;
+    max-height: 100dvh;
 }
 
 .instruction {
@@ -395,14 +395,15 @@ canvas {
 }
 
 @media only screen and (max-height: 480px) {
+
     canvas {
-        height: 100vh;
+        height: 100dvh;
         width: unset;
         margin: auto;
     }
 
     .optionBtnLayer {
-        height: 100vh;
+        height: 100dvh;
         width: auto;
         aspect-ratio: 1.5;
         position: absolute;
@@ -413,18 +414,18 @@ canvas {
     
     
     #mainDiv {
-        height: 100vh;
+        height: 100dvh;
         width: auto;
     }
 
     #startScreen {
-        height: 100vh;
+        height: 100dvh;
         width: 100%;
         background-size: cover;
     }
 
     #howToPlayScreen {
-        height: 100vh;
+        height: 100dvh;
         width: 100%;
         background-size: cover;
     }
