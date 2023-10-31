@@ -48,7 +48,7 @@ canvas {
     position: relative;
     width: 720px;
     height: 480px;
-    border: 15px solid black;
+    border: 15px solid #243148;
     border-radius: 15px;
 }
 
